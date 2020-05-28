@@ -18,9 +18,12 @@ public:
 	ATank();
 
 	bool controlEnabled = true;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<ATank> BulletClass;
+		UChildActorComponent* BulletSpawnpoint;
+
+	UPROPERTY(BlueprintReadWrite)
+		FVector2D minMaxBulletSpeed = FVector2D(200,4000);
 
 protected:
 	float velocity;
@@ -60,4 +63,7 @@ public:
 	//for blueprint
 	UFUNCTION(BlueprintImplementableEvent)
 		void SetChargeBar(float amount);
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void SapwnBullet(float amount);
 };

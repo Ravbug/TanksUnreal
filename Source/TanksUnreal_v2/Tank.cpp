@@ -2,6 +2,9 @@
 
 
 #include "Tank.h"
+#include "Kismet/KismetMathLibrary.h"
+
+#define FPSSCALE deltaTime / evalNormal
 
 // Sets default values
 ATank::ATank()
@@ -18,11 +21,17 @@ ATank::ATank()
 
 	ChargeShotBar = CreateDefaultSubobject<UWidgetComponent>("ChargeShot");
 	ChargeShotBar->SetupAttachment(CollisionRoot);
+	ChargeShotBar->SetRelativeRotation(FQuat::MakeFromEuler(FVector(0,90,180)));
+	ChargeShotBar->SetRelativeLocation(FVector(0,100,-60));
 
 	//heath HUD will always face the camera
 	HealthInfoHUD = CreateDefaultSubobject<UWidgetComponent>("Info HUD");
 	HealthInfoHUD->SetupAttachment(CollisionRoot);
 	HealthInfoHUD->SetWidgetSpace(EWidgetSpace::Screen);
+	HealthInfoHUD->SetRelativeLocation(FVector(0,0,100));
+
+	BulletSpawnpoint = CreateDefaultSubobject<UChildActorComponent>("Bullet Spawnpoint");
+	BulletSpawnpoint->SetupAttachment(CollisionRoot);
 }
 
 // Called when the game starts or when spawned
@@ -65,8 +74,8 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ATank::Move(float amount)
 {
 	if (controlEnabled) {
-		if (abs(velocity) < maxSpeed * deltaTime / evalNormal) {
-			velocity += amount * deltaTime / evalNormal;
+		if (abs(velocity) < maxSpeed * FPSSCALE) {
+			velocity += amount * FPSSCALE;
 		}
 	}
 }
@@ -84,7 +93,7 @@ void ATank::ChargeShot(float speed)
 {
 	if (speed > 0.1) {
 		ChargeShotBar->SetVisibility(true);
-		currentPercent += speed * chargeRate * deltaTime / evalNormal;
+		currentPercent += speed * chargeRate * FPSSCALE;
 		//update progress bar
 		if (currentPercent >= 1) {
 			Fire();
@@ -95,7 +104,7 @@ void ATank::ChargeShot(float speed)
 
 void ATank::Fire()
 {
-
+	SapwnBullet(UKismetMathLibrary::MapRangeClamped(currentPercent,0,1,minMaxBulletSpeed.X,minMaxBulletSpeed.Y));
 
 	//reset charge bar
 	SetChargeBar(currentPercent = 0);
