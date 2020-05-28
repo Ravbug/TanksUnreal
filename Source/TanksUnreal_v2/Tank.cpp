@@ -31,7 +31,6 @@ void ATank::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	velocity -= velocity * 0.05 * deltaTime / evalNormal;
-	UE_LOG(LogTemp, Warning, TEXT("velocity %f"), velocity);
 	//move the tank forward based on velocity
 	FVector v = GetActorForwardVector().RotateAngleAxis(90, FVector::UpVector);
 	v *= velocity;

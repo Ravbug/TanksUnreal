@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "TanksUnreal_v2GameModeBase.h"
 #include "Blueprint/UserWidget.h"
+#include "Tank.h"
 #include "TanksGameMode.generated.h"
 
 /**
@@ -21,6 +22,14 @@ public:
 	}
 	void EndGame();
 	void RoundComplete();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int maxPlayerCount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<ATank> APlayerActorClass;
+
+	TSet<ATank> Players;
 
 protected:
 
