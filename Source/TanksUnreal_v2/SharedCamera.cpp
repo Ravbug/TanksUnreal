@@ -44,6 +44,8 @@ void ASharedCamera::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	//auto newPos = GetAverageLocation(gamemode->Players);
+
+	//TODO: don't do this, instead use the gamemanager's list
 	TArray<AActor*> actors;
 	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()), ATank::StaticClass(), actors);
 
