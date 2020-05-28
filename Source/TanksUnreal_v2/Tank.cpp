@@ -21,7 +21,11 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	//enable physics
+	CollisionRoot->SetSimulatePhysics(true);
+	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	CollisionRoot->SetEnableGravity(true);
 }
 
 // Called every frame

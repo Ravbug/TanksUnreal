@@ -17,9 +17,6 @@ class TANKSUNREAL_V2_API ATanksGameMode : public ATanksUnreal_v2GameModeBase
 	GENERATED_BODY()
 	
 public:
-	ATanksGameMode() {
-
-	}
 	void EndGame();
 	void RoundComplete();
 
@@ -29,7 +26,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<ATank> APlayerActorClass;
 
-	TSet<ATank> Players;
+	UPROPERTY()
+	TArray<ATank*> Players;
 
 protected:
 

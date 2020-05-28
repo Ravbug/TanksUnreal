@@ -48,8 +48,7 @@ void ATanksGameMode::BeginPlay()
 			}
 
 			//add the spawned actor to the set
-			/*bool isInSet;
-			Players.Add(spawned, &isInSet);*/
+			Players.AddUnique(spawned);
 		}
 	}
 }
