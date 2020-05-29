@@ -121,12 +121,13 @@ void ATank::Fire()
 
 void ATank::Damage(ATankDamager* damagingActor)
 {
+	if (!IsAlive) {
+		return;
+	}
 	//calculate distance
 	auto distance = FVector::Dist(this->GetActorLocation(),damagingActor->GetActorLocation());
 	auto damageTaken = UKismetMathLibrary::MapRangeClamped(distance,damageDistMinMax.X,damageDistMinMax.Y,1.0,0.0) * damagingActor->damageMultiplier;
 	
-	GLog->Logf(TEXT("- %f"),damageTaken);
-
 	//take damage
 	currentHealth -= damageTaken;
 
@@ -141,6 +142,9 @@ void ATank::Damage(ATankDamager* damagingActor)
 	CollisionRoot->AddImpulse(dirvec * damagingActor->knockbackStrength * CollisionRoot->GetMass());
 
 	//dead? play explosion effect
+	if (currentHealth < 0) {
+		Die();
+	}
 }
 
 void ATank::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -150,4 +154,17 @@ void ATank::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 	if (td != nullptr) {
 		Damage(td);
 	}
+}
+
+/**
+ Mark the tank as dead. The tank does not get deallocated.
+ This will invoke the DieEffect which the blueprint defines.
+ */
+void ATank::Die()
+{
+	IsAlive = false;
+	CollisionRoot->SetVisibility(false, true);
+	CollisionRoot->SetSimulatePhysics(false);
+	CollisionRoot->SetGenerateOverlapEvents(false);
+	DieEffect();
 }

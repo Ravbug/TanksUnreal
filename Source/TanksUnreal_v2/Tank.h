@@ -19,6 +19,7 @@ public:
 	ATank();
 
 	bool controlEnabled = true;
+	bool IsAlive = true;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UChildActorComponent* BulletSpawnpoint;
@@ -67,6 +68,8 @@ public:
 	void Turn(float amount);
 	void ChargeShot(float speed);
 	void Fire();
+	void Die();
+
 
 	//for blueprint
 	UFUNCTION(BlueprintImplementableEvent)
@@ -80,6 +83,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void Damage(ATankDamager* damagingActor);
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void DieEffect();
 
 	UFUNCTION()
 		void BeginOverlap(UPrimitiveComponent* OverlappedComponent,

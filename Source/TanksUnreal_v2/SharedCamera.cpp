@@ -5,6 +5,16 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
+/**
+ Should this actor be focused on by the camera?
+ @param a the actor to test
+ @return true if the actor is a tank and the tank is alive
+ */
+bool TestActor(AActor* a) {
+	ATank* tank = Cast<ATank>(a);
+	return tank == nullptr || tank->IsAlive;
+}
+
 // Sets default values
 ASharedCamera::ASharedCamera()
 {
@@ -75,6 +85,9 @@ void ASharedCamera::Tick(float DeltaTime)
 double ASharedCamera::MaxDistance(TArray<AActor*>& vectors) {
 	double maxDist = 0;
 	for (auto v : vectors) {
+		if (!TestActor(v)) {
+			continue;
+		}
 		double dist = FVector::Dist(v->GetActorLocation(), GetActorLocation());
 		if (dist > maxDist) {
 			maxDist = dist;
@@ -89,14 +102,19 @@ double ASharedCamera::MaxDistance(TArray<AActor*>& vectors) {
 */
 FVector ASharedCamera::GetAverageLocation(TArray<AActor*>& vectors) {
 	FVector average = FVector();
+	int sub = 0;
 	for (auto a : vectors) {
+		if (!TestActor(a)) {
+			++sub;
+			continue;
+		}
 		auto v = a->GetActorLocation();
 		average.X += v.X;
 		average.Y += v.Y;
 		average.Z += v.Z;
 	}
-	average.X /= vectors.Num();
-	average.Y /= vectors.Num();
-	average.Z /= vectors.Num();
+	average.X /= vectors.Num() - sub;
+	average.Y /= vectors.Num() - sub;
+	average.Z /= vectors.Num() - sub;
 	return average;
 }
