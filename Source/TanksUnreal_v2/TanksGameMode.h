@@ -17,6 +17,9 @@ class TANKSUNREAL_V2_API ATanksGameMode : public ATanksUnreal_v2GameModeBase
 	GENERATED_BODY()
 	
 public:
+	ATanksGameMode() {
+		PrimaryActorTick.bCanEverTick = true;
+	}
 	void EndGame();
 	void RoundComplete();
 
@@ -26,10 +29,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<ATank> APlayerActorClass;
 
-	UPROPERTY()
-	TArray<ATank*> Players;
+
+	void Tick(float deltaTime) override;
+
+	TArray<ATank*> GetActiveTanks();
 
 protected:
+
+	TArray<ATank*> AllTanks;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")

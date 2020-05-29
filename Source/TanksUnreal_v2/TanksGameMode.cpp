@@ -46,9 +46,34 @@ void ATanksGameMode::BeginPlay()
 			else {
 				UGameplayStatics::RemovePlayer(controller,false);
 			}
-
-			//add the spawned actor to the set
-			Players.AddUnique(spawned);
 		}
 	}
+	//load tanks into the array
+	TArray<AActor*> temp;
+	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()), ATank::StaticClass(), temp);
+
+	//copy as tank into the alltanks array
+	for (const auto& t : temp) {
+		AllTanks.Add(Cast<ATank>(t));
+	}
+}
+
+void ATanksGameMode::Tick(float deltaTime)
+{
+	Super::Tick(deltaTime);
+}
+
+/**
+ * Get all the active tanks during this tick. A tank is active if it is alive.
+ * @returns a TArray of the pointers to the active tanks
+ */
+TArray<ATank*> ATanksGameMode::GetActiveTanks()
+{
+	TArray<ATank*> temp;
+	for (auto t : AllTanks) {
+		if (t->IsAlive) {
+			temp.Add(t);
+		}
+	}
+	return temp;
 }

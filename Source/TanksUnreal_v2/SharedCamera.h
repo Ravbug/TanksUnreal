@@ -35,9 +35,9 @@ protected:
 
 	float origZ;
 
-	double MaxDistance(TArray<AActor*>& vectors);
+	double MaxDistance(TArray<ATank*>& vectors);
 
-	FVector GetAverageLocation(TArray<AActor*>& vectors);
+	FVector GetAverageLocation(TArray<ATank*>& vectors);
 
 public:	
 	// Called every frame

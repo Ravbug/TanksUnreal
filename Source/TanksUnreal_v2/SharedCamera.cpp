@@ -5,16 +5,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
-/**
- Should this actor be focused on by the camera?
- @param a the actor to test
- @return true if the actor is a tank and the tank is alive
- */
-bool TestActor(AActor* a) {
-	ATank* tank = Cast<ATank>(a);
-	return tank == nullptr || tank->IsAlive;
-}
-
 // Sets default values
 ASharedCamera::ASharedCamera()
 {
@@ -56,15 +46,14 @@ void ASharedCamera::Tick(float DeltaTime)
 	//auto newPos = GetAverageLocation(gamemode->Players);
 
 	//TODO: don't do this, instead use the gamemanager's list
-	TArray<AActor*> actors;
-	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()), ATank::StaticClass(), actors);
+	auto tanks = gamemode->GetActiveTanks();
 
 	//set center
-	auto newPos = GetAverageLocation(actors);
+	auto newPos = GetAverageLocation(tanks);
 	newPos.Z = origZ;
 
 	//set zoom
-	double dist = MaxDistance(actors) * 1.5;
+	double dist = MaxDistance(tanks) * 1.5;
 	dist = FMath::Clamp(dist,(double)minMaxDistance.X,(double)minMaxDistance.Y);
 	springarm->TargetArmLength = dist;
 
@@ -82,12 +71,9 @@ void ASharedCamera::Tick(float DeltaTime)
 * @param (std::vector<FVector>) &vectors: a vector of FVectors to calculate the maximum distance
 * @return (double): the distance between the camera root and the furthest object
 */
-double ASharedCamera::MaxDistance(TArray<AActor*>& vectors) {
+double ASharedCamera::MaxDistance(TArray<ATank*>& vectors) {
 	double maxDist = 0;
 	for (auto v : vectors) {
-		if (!TestActor(v)) {
-			continue;
-		}
 		double dist = FVector::Dist(v->GetActorLocation(), GetActorLocation());
 		if (dist > maxDist) {
 			maxDist = dist;
@@ -100,21 +86,16 @@ double ASharedCamera::MaxDistance(TArray<AActor*>& vectors) {
 * @param (std::vector<FVector>) &vectors: a vector of FVectors to calculate the average distance
 * @return (FVector): FVector representing the average x, y, and z coordinates of the FVectors
 */
-FVector ASharedCamera::GetAverageLocation(TArray<AActor*>& vectors) {
+FVector ASharedCamera::GetAverageLocation(TArray<ATank*>& vectors) {
 	FVector average = FVector();
-	int sub = 0;
 	for (auto a : vectors) {
-		if (!TestActor(a)) {
-			++sub;
-			continue;
-		}
 		auto v = a->GetActorLocation();
 		average.X += v.X;
 		average.Y += v.Y;
 		average.Z += v.Z;
 	}
-	average.X /= vectors.Num() - sub;
-	average.Y /= vectors.Num() - sub;
-	average.Z /= vectors.Num() - sub;
+	average.X /= vectors.Num();
+	average.Y /= vectors.Num();
+	average.Z /= vectors.Num();
 	return average;
 }
