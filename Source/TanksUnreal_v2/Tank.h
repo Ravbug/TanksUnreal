@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/Pawn.h"
 #include "Components/WidgetComponent.h"
+#include "TankDamager.h"
 #include "Tank.generated.h"
 
 UCLASS()
@@ -37,7 +38,10 @@ protected:
 	float currentPercent = 0;
 	float chargeRate = 0.01;
 
-	int currentHealth = 100;
+	//this is % of health
+	float currentHealth = 1;
+	UPROPERTY()
+		FVector2D damageDistMinMax = FVector2D(0,300);
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -69,8 +73,19 @@ public:
 		void SetChargeBar(float amount);
 
 	UFUNCTION(BlueprintImplementableEvent)
+		void SetHealthBar(float amount);
+
+	UFUNCTION(BlueprintImplementableEvent)
 		void SapwnBullet(float amount);
 
 	UFUNCTION(BlueprintCallable)
-		void TakeDamage(AActor* damagingActor);
+		void Damage(ATankDamager* damagingActor);
+
+	UFUNCTION()
+		void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+			AActor* OtherActor,
+			UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex,
+			bool bFromSweep,
+			const FHitResult& SweepResult);
 };

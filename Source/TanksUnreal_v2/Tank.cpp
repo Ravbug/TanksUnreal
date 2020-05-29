@@ -41,6 +41,12 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//update health
+	SetHealthBar(currentHealth);
+
+	//enable delegate
+	CollisionRoot->OnComponentBeginOverlap.AddDynamic(this, &ATank::BeginOverlap);
+
 	//hide shot bar
 	ChargeShotBar->SetVisibility(false);
 
@@ -113,11 +119,35 @@ void ATank::Fire()
 	ChargeShotBar->SetVisibility(false);
 }
 
-void ATank::TakeDamage(AActor* damagingActor)
+void ATank::Damage(ATankDamager* damagingActor)
 {
 	//calculate distance
+	auto distance = FVector::Dist(this->GetActorLocation(),damagingActor->GetActorLocation());
+	auto damageTaken = UKismetMathLibrary::MapRangeClamped(distance,damageDistMinMax.X,damageDistMinMax.Y,1.0,0.0) * damagingActor->damageMultiplier;
+	
+	GLog->Logf(TEXT("- %f"),damageTaken);
+
 	//take damage
+	currentHealth -= damageTaken;
+
 	//update health bar
+	SetHealthBar(currentHealth);
+
+	//knockback
+	auto dirvec =  damagingActor->GetActorLocation() - GetActorLocation();
+	dirvec.Z = 50;
+	dirvec = dirvec.RotateAngleAxis(180, FVector(0, 0, 1));
+	dirvec.Normalize();
+	CollisionRoot->AddImpulse(dirvec * damagingActor->knockbackStrength * CollisionRoot->GetMass());
 
 	//dead? play explosion effect
+}
+
+void ATank::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	//is the overlapping actor something that can damage the tank?
+	ATankDamager* td = Cast<ATankDamager>(OtherActor);
+	if (td != nullptr) {
+		Damage(td);
+	}
 }
