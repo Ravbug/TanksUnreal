@@ -18,14 +18,18 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
-	bool controlEnabled = true;
+	bool controlEnabled = false;
 	bool IsAlive = true;
+
+	int points = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UChildActorComponent* BulletSpawnpoint;
 
 	UPROPERTY(BlueprintReadWrite)
 		FVector2D minMaxBulletSpeed = FVector2D(200,4000);
+
+	void SetupTank();
 
 protected:
 	float velocity;

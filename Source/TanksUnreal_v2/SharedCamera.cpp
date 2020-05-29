@@ -16,6 +16,7 @@ ASharedCamera::ASharedCamera()
 	springarm->bEnableCameraLag = true;
 	springarm->bEnableCameraRotationLag = true;
 	springarm->CameraLagSpeed = 1;
+	springarm->CameraRotationLagSpeed = 1;
 
 	camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	camera->SetupAttachment(springarm);
@@ -62,7 +63,7 @@ void ASharedCamera::Tick(float DeltaTime)
 
 
 	// set angle
-	SetActorRotation(FQuat::MakeFromEuler(FVector(0, UKismetMathLibrary::MapRangeClamped(dist,minMaxDistance.X,minMaxDistance.Y,-30,-80),0)));
+	SetActorRotation(FQuat::MakeFromEuler(FVector(0, UKismetMathLibrary::MapRangeClamped(dist,minMaxDistance.X,minMaxDistance.Y,-40,-80),0)));
 }
 
 

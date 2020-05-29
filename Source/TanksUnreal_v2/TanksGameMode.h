@@ -6,6 +6,7 @@
 #include "TanksUnreal_v2GameModeBase.h"
 #include "Blueprint/UserWidget.h"
 #include "Tank.h"
+#include "Delegates/DelegateInstancesImpl.h"
 #include "TanksGameMode.generated.h"
 
 /**
@@ -22,6 +23,8 @@ public:
 	}
 	void EndGame();
 	void RoundComplete();
+	void SetupRound();
+	void BeginRound();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int maxPlayerCount;
@@ -32,12 +35,16 @@ public:
 
 	void Tick(float deltaTime) override;
 
-	TArray<ATank*> GetActiveTanks();
+	const TArray<ATank*>& GetActiveTanks();
 
 protected:
 
 	TArray<ATank*> AllTanks;
+	TArray<ATank*> ActiveTanks;
+	TArray<AActor*> playerStarts;
 
+	int numRounds = 3;
+	int round = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
 		TSubclassOf<UUserWidget> DefaultLevelCompleteWidget;

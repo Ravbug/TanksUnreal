@@ -3,13 +3,73 @@
 #include "TanksGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
+#include <algorithm>    // std::min
+
+//shortcut for setting timers
+#define SET_TIMER(method,seconds) FTimerHandle handle; GetWorld()->GetTimerManager().SetTimer(handle, this, method, seconds, false)
 
 void ATanksGameMode::EndGame()
 {
+
 }
 
 void ATanksGameMode::RoundComplete()
 {
+	SetActorTickEnabled(false);
+
+	if (round < numRounds) {
+		SET_TIMER(&ATanksGameMode::SetupRound, 3);
+	}
+	else {
+		EndGame();
+		return;
+	}
+	++round;
+
+	//one winner?
+	if (ActiveTanks.Num() == 1) {
+		//show winner name
+		ActiveTanks[0]->points++;
+	}
+	//tie?
+	else {
+		//show winner name
+	}
+	
+	//disable the tanks
+	for (const auto& a : AllTanks) {
+		a->controlEnabled = false;
+	}
+}
+
+void ATanksGameMode::SetupRound()
+{
+	//reset all the tanks
+	for (const auto& a : AllTanks) {
+		a->SetupTank();
+	}
+
+	//move the tanks to the spawnpoints
+	for (int i = 0; i < std::min(AllTanks.Num(),playerStarts.Num()); ++i) {
+		AllTanks[i]->SetActorLocation(playerStarts[i]->GetActorLocation());
+	}
+
+	//display Round header
+
+	//timer to start beginround
+	SET_TIMER(&ATanksGameMode::BeginRound, 3);
+}
+
+void ATanksGameMode::BeginRound() {
+	//enable control on all the tanks
+	for (const auto& a : AllTanks) {
+		a->controlEnabled = true;
+	}
+
+	//hide round header
+
+	//start ticking
+	SetActorTickEnabled(true);
 }
 
 
@@ -20,7 +80,6 @@ void ATanksGameMode::BeginPlay()
 	//adapted from https://www.youtube.com/watch?v=3lN2eZIgAQ0 (local shared-screen multiplayer game in blueprint)
 
 	//get all the player starts
-	TArray<AActor*> playerStarts;
 	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()),APlayerStart::StaticClass(),playerStarts);
 
 	//For the max number of players
@@ -56,24 +115,32 @@ void ATanksGameMode::BeginPlay()
 	for (const auto& t : temp) {
 		AllTanks.Add(Cast<ATank>(t));
 	}
+
+	SetupRound();
 }
 
 void ATanksGameMode::Tick(float deltaTime)
 {
 	Super::Tick(deltaTime);
+
+	//update active tanks
+	ActiveTanks.Empty();
+	for (auto t : AllTanks) {
+		if (t->IsAlive) {
+			ActiveTanks.Add(t);
+		}
+	}
+
+	if (ActiveTanks.Num() <= 1) {
+		RoundComplete();
+	}
 }
 
 /**
  * Get all the active tanks during this tick. A tank is active if it is alive.
  * @returns a TArray of the pointers to the active tanks
  */
-TArray<ATank*> ATanksGameMode::GetActiveTanks()
+const TArray<ATank*>& ATanksGameMode::GetActiveTanks()
 {
-	TArray<ATank*> temp;
-	for (auto t : AllTanks) {
-		if (t->IsAlive) {
-			temp.Add(t);
-		}
-	}
-	return temp;
+	return ActiveTanks;
 }

@@ -41,19 +41,10 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//update health
-	SetHealthBar(currentHealth);
-
 	//enable delegate
 	CollisionRoot->OnComponentBeginOverlap.AddDynamic(this, &ATank::BeginOverlap);
 
-	//hide shot bar
-	ChargeShotBar->SetVisibility(false);
-
-	//enable physics
-	CollisionRoot->SetSimulatePhysics(true);
-	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	CollisionRoot->SetEnableGravity(true);
+	SetupTank();
 }
 
 // Called every frame
@@ -168,9 +159,28 @@ void ATank::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
  */
 void ATank::Die()
 {
-	IsAlive = false;
+	IsAlive = controlEnabled = false;
 	CollisionRoot->SetVisibility(false, true);
 	CollisionRoot->SetSimulatePhysics(false);
 	CollisionRoot->SetGenerateOverlapEvents(false);
 	DieEffect();
+}
+
+void ATank::SetupTank()
+{
+	IsAlive = true;
+	currentHealth = 1;
+
+	//update health
+	SetHealthBar(currentHealth);
+
+	//hide shot bar
+	CollisionRoot->SetVisibility(true, true);
+	ChargeShotBar->SetVisibility(false);
+
+	//enable physics
+	CollisionRoot->SetSimulatePhysics(true);
+	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	CollisionRoot->SetEnableGravity(true);
+	CollisionRoot->SetGenerateOverlapEvents(true);
 }
