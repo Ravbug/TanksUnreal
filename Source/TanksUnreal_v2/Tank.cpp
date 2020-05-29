@@ -18,6 +18,8 @@ ATank::ATank()
 	RootComponent = CollisionRoot;
 	CollisionRoot->SetBoxExtent(FVector(boxextent, boxextent, boxextent));
 	CollisionRoot->SetRelativeLocation(FVector(0,0, boxextent/2.0));
+	CollisionRoot->BodyInstance.bLockXRotation = true;
+	CollisionRoot->BodyInstance.bLockYRotation = true;
 
 	ChargeShotBar = CreateDefaultSubobject<UWidgetComponent>("ChargeShot");
 	ChargeShotBar->SetupAttachment(CollisionRoot);
@@ -109,4 +111,13 @@ void ATank::Fire()
 	//reset charge bar
 	SetChargeBar(currentPercent = 0);
 	ChargeShotBar->SetVisibility(false);
+}
+
+void ATank::TakeDamage(AActor* damagingActor)
+{
+	//calculate distance
+	//take damage
+	//update health bar
+
+	//dead? play explosion effect
 }

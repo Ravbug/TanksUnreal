@@ -27,13 +27,17 @@ public:
 
 protected:
 	float velocity;
-	int maxSpeed = 10;
+
+	UPROPERTY(BlueprintReadWrite)
+	int maxSpeed = 6;
 
 	float deltaTime = 0;					//deltatime stored from Tick()
 	const float evalNormal = 1.0 / 120;     //1 / the "normal" tick speed. Values in this game assume 120hz is the normal tick speed. To scale, multiply the value by deltaTime/evalNormal
 
 	float currentPercent = 0;
 	float chargeRate = 0.01;
+
+	int currentHealth = 100;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -66,4 +70,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void SapwnBullet(float amount);
+
+	UFUNCTION(BlueprintCallable)
+		void TakeDamage(AActor* damagingActor);
 };
