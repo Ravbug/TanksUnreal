@@ -15,6 +15,7 @@ public:
 	// Sets default values for this actor's properties
 	ATankDamager();
 
+	//these can be overridden in subclasses or in blueprints
 	UPROPERTY(BlueprintReadWrite)
 		float damageMultiplier = 1.0;
 

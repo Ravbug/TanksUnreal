@@ -110,6 +110,9 @@ void ATank::ChargeShot(float speed)
 	}
 }
 
+/**
+ * Fire a bullet based on the charge amount
+ */
 void ATank::Fire()
 {
 	SapwnBullet(UKismetMathLibrary::MapRangeClamped(currentPercent,0,1,minMaxBulletSpeed.X,minMaxBulletSpeed.Y));
@@ -119,6 +122,9 @@ void ATank::Fire()
 	ChargeShotBar->SetVisibility(false);
 }
 
+/**
+ * Damage this tank based on a tank damager
+ */
 void ATank::Damage(ATankDamager* damagingActor)
 {
 	if (!IsAlive) {
