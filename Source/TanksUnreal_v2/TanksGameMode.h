@@ -37,6 +37,8 @@ public:
 
 	const TArray<ATank*>& GetActiveTanks();
 
+	FString GetScoreString();
+
 protected:
 
 	TArray<ATank*> AllTanks;
@@ -50,10 +52,10 @@ protected:
 		TSubclassOf<UUserWidget> LevelStartingWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
-		UUserWidget* RoundCompleteWidget;
+		TSubclassOf<UUserWidget> RoundCompleteWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
-		UUserWidget* GameCompleteWidget;
+		TSubclassOf<UUserWidget> GameCompleteWidget;
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void DisplayScores(const FString& str);

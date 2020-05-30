@@ -43,10 +43,13 @@ void ATanksGameMode::RoundComplete()
 	for (const auto& a : AllTanks) {
 		a->controlEnabled = false;
 	}
+
+	DisplayScores(GetScoreString());
 }
 
 void ATanksGameMode::SetupRound()
 {
+	ClearViewport();
 	//reset all the tanks
 	for (const auto& a : AllTanks) {
 		a->SetupTank();
@@ -95,7 +98,7 @@ void ATanksGameMode::BeginPlay()
 		if (pstart != nullptr) {
 
 			//attempt to create a controller
-			auto controller = UGameplayStatics::CreatePlayer(GetWorld());
+			auto controller = UGameplayStatics::CreatePlayer(GetWorld(),i);
 			if (controller == nullptr) {
 				continue;
 			}
@@ -148,4 +151,17 @@ void ATanksGameMode::Tick(float deltaTime)
 const TArray<ATank*>& ATanksGameMode::GetActiveTanks()
 {
 	return ActiveTanks;
+}
+
+/**
+Create a formatted score string to display in the viewport
+*/
+FString ATanksGameMode::GetScoreString()
+{
+	FString str("<Emphasis>");
+	for (const auto& t : AllTanks) {
+		str += t->GetName() + FString::Printf(L":%d\t",t->points);
+	}
+	str += FString("</>");
+	return str;
 }
