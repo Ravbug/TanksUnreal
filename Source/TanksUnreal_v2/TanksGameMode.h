@@ -47,13 +47,19 @@ protected:
 	int round = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
-		TSubclassOf<UUserWidget> DefaultLevelCompleteWidget;
+		TSubclassOf<UUserWidget> LevelStartingWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
 		UUserWidget* RoundCompleteWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
 		UUserWidget* GameCompleteWidget;
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void DisplayRoundStarting(const FString& str);
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void ClearViewport();
 
 private:
 	void BeginPlay() override;

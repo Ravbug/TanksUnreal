@@ -55,6 +55,7 @@ void ATanksGameMode::SetupRound()
 	}
 
 	//display Round header
+	DisplayRoundStarting(FString::Printf(TEXT("<Emphasis>Round %d</>"),round));
 
 	//timer to start beginround
 	SET_TIMER(&ATanksGameMode::BeginRound, 3);
@@ -67,6 +68,7 @@ void ATanksGameMode::BeginRound() {
 	}
 
 	//hide round header
+	ClearViewport();
 
 	//start ticking
 	SetActorTickEnabled(true);
