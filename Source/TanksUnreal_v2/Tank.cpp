@@ -34,7 +34,13 @@ ATank::ATank()
 
 	BulletSpawnpoint = CreateDefaultSubobject<UChildActorComponent>("Bullet Spawnpoint");
 	BulletSpawnpoint->SetupAttachment(CollisionRoot);
+
 }
+
+//const FString& ATank::GetName()
+//{
+//	return GetController()->GetName();
+//}
 
 // Called when the game starts or when spawned
 void ATank::BeginPlay()

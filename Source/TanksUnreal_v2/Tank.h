@@ -67,6 +67,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		UWidgetComponent* HealthInfoHUD;
 
+	//FString GetName();
+
 	//gameplay methods
 	void Move(float amount);
 	void Turn(float amount);

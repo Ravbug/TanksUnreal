@@ -56,7 +56,10 @@ protected:
 		UUserWidget* GameCompleteWidget;
 
 	UFUNCTION(BlueprintImplementableEvent)
-		void DisplayRoundStarting(const FString& str);
+		void DisplayScores(const FString& str);
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void DisplayHeaderText(const FString& str);
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void ClearViewport();

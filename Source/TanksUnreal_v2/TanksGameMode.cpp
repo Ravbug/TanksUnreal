@@ -8,6 +8,7 @@
 //shortcut for setting timers
 #define SET_TIMER(method,seconds) FTimerHandle handle; GetWorld()->GetTimerManager().SetTimer(handle, this, method, seconds, false)
 
+
 void ATanksGameMode::EndGame()
 {
 
@@ -30,10 +31,12 @@ void ATanksGameMode::RoundComplete()
 	if (ActiveTanks.Num() == 1) {
 		//show winner name
 		ActiveTanks[0]->points++;
+		DisplayHeaderText(FString(L"Winner: <Noteworthy>") + ActiveTanks[0]->GetName() + FString(L"</>"));
 	}
 	//tie?
 	else {
 		//show winner name
+		DisplayHeaderText(FString::Printf(TEXT("It's a tie!")));
 	}
 	
 	//disable the tanks
@@ -55,7 +58,7 @@ void ATanksGameMode::SetupRound()
 	}
 
 	//display Round header
-	DisplayRoundStarting(FString::Printf(TEXT("<Emphasis>Round %d</>"),round));
+	DisplayHeaderText(FString::Printf(TEXT("<Emphasis>Round %d</>"),round));
 
 	//timer to start beginround
 	SET_TIMER(&ATanksGameMode::BeginRound, 3);
