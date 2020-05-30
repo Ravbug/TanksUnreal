@@ -12,5 +12,5 @@ ATankPlayerController::ATankPlayerController() {
 
 FString ATankPlayerController::GetName_Implementation()
 {
-	return FString::Printf(L"Player %d", playerNum);
+	return FString::Printf(TEXT("Player %d"), playerNum);
 }

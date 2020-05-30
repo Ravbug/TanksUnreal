@@ -19,7 +19,7 @@ void ATanksGameMode::EndGame()
 		}
 	}
 	ClearViewport();
-	DisplayHeaderText(FString(L"Game Winner: <Noteworthy>") + ActiveTanks[0]->GetName() + FString(L"</>"));
+	DisplayHeaderText(FString(TEXT("Game Winner: <Noteworthy>")) + ActiveTanks[0]->GetName() + FString(TEXT("</>")));
 	DisplayScores(GetScoreString());
 
 	//also display the go back to the menu button
@@ -41,7 +41,7 @@ void ATanksGameMode::RoundComplete()
 	if (ActiveTanks.Num() == 1) {
 		//show winner name
 		ActiveTanks[0]->points++;
-		DisplayHeaderText(FString(L"Winner: <Noteworthy>") + ActiveTanks[0]->GetName() + FString(L"</>"));
+		DisplayHeaderText(FString(TEXT("Winner: <Noteworthy>")) + ActiveTanks[0]->GetName() + FString(TEXT("</>")));
 	}
 	//tie?
 	else {
@@ -176,7 +176,7 @@ FString ATanksGameMode::GetScoreString()
 {
 	FString str("<Emphasis>");
 	for (const auto& t : AllTanks) {
-		str += t->GetName() + FString::Printf(L":%d\t",t->points);
+		str += t->GetName() + FString::Printf(TEXT(":%d\t"),t->points);
 	}
 	str += FString("</>");
 	return str;
