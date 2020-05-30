@@ -12,14 +12,21 @@ ASharedCamera::ASharedCamera()
 	PrimaryActorTick.bCanEverTick = true;
 
 	springarm = CreateDefaultSubobject<USpringArmComponent>("Spring Arm");
-	springarm->SetupAttachment(RootComponent);
-	springarm->bEnableCameraLag = true;
-	springarm->bEnableCameraRotationLag = true;
-	springarm->CameraLagSpeed = 1;
-	springarm->CameraRotationLagSpeed = 1;
+	springarm->bEnableCameraLag = false;
+	springarm->bDoCollisionTest = false;
+	RootComponent = springarm;
+
+	springarmalt = CreateDefaultSubobject<USpringArmComponent>("Lag Spring Arm");
+	springarmalt->SetupAttachment(springarm);
+
+	springarmalt->bEnableCameraLag = true;
+	springarmalt->bEnableCameraRotationLag = true;
+	springarmalt->CameraLagSpeed = 0.5;
+	springarmalt->CameraRotationLagSpeed = 0.5;
+
 
 	camera = CreateDefaultSubobject<UCameraComponent>("Camera");
-	camera->SetupAttachment(springarm);
+	camera->SetupAttachment(springarmalt);
 }
 
 // Called when the game starts or when spawned

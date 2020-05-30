@@ -11,7 +11,17 @@
 
 void ATanksGameMode::EndGame()
 {
+	//find the max score
+	ATank* maxScoreTank = AllTanks[0];
+	for (const auto& a : AllTanks) {
+		if (a->points > maxScoreTank->points) {
+			maxScoreTank = a;
+		}
+	}
+	DisplayHeaderText(FString(L"Game Winner: <Noteworthy>") + ActiveTanks[0]->GetName() + FString(L"</>"));
+	DisplayScores(GetScoreString());
 
+	//also display the go back to the menu button
 }
 
 void ATanksGameMode::RoundComplete()
@@ -22,8 +32,7 @@ void ATanksGameMode::RoundComplete()
 		SET_TIMER(&ATanksGameMode::SetupRound, 3);
 	}
 	else {
-		EndGame();
-		return;
+		SET_TIMER(&ATanksGameMode::EndGame, 3);
 	}
 	++round;
 

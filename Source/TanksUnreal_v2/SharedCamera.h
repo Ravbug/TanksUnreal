@@ -29,6 +29,9 @@ protected:
 		USpringArmComponent* springarm;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USpringArmComponent* springarmalt;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UCameraComponent* camera;
 
 	ATanksGameMode* gamemode;
