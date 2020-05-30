@@ -8,6 +8,7 @@
 #include "Components/WidgetComponent.h"
 #include "TankDamager.h"
 #include "Components/StaticMeshComponent.h"
+#include "UObject/UObjectBaseUtility.h"
 #include "Tank.generated.h"
 
 UCLASS()
@@ -52,6 +53,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void SetNameInHUD(const FString& str);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -68,7 +72,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		UWidgetComponent* HealthInfoHUD;
 
-	//FString GetName();
+	FString GetName();
+	void UpdateName() {
+		SetNameInHUD(GetName());
+	}
 
 	//gameplay methods
 	void Move(float amount);

@@ -3,6 +3,7 @@
 
 #include "Tank.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "TankController.h"
 #include "Materials/MaterialInstanceDynamic.h"
 
 #define FPSSCALE deltaTime / evalNormal
@@ -38,10 +39,18 @@ ATank::ATank()
 
 }
 
-//const FString& ATank::GetName()
-//{
-//	return GetController()->GetName();
-//}
+FString ATank::GetName()
+{
+	auto c = GetController();
+	ITankController* controller = Cast<ITankController>(c);
+	if (controller == nullptr) {
+		//use default GetName if controller is not present or has the wrong type
+		return Super::GetName();
+	}
+	else {
+		return controller->Execute_GetName(c);
+	}
+}
 
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
@@ -52,6 +61,8 @@ void ATank::BeginPlay()
 	CollisionRoot->OnComponentBeginOverlap.AddDynamic(this, &ATank::BeginOverlap);
 
 	SetupTank();
+
+	UpdateName();
 }
 
 // Called every frame
