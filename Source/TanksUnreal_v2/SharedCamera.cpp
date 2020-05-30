@@ -21,8 +21,8 @@ ASharedCamera::ASharedCamera()
 
 	springarmalt->bEnableCameraLag = true;
 	springarmalt->bEnableCameraRotationLag = true;
-	springarmalt->CameraLagSpeed = 0.5;
-	springarmalt->CameraRotationLagSpeed = 0.5;
+	springarmalt->CameraLagSpeed = 5;
+	springarmalt->CameraRotationLagSpeed = 5;
 
 
 	camera = CreateDefaultSubobject<UCameraComponent>("Camera");
