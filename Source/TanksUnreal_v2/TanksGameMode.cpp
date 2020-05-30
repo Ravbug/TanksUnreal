@@ -53,6 +53,7 @@ void ATanksGameMode::SetupRound()
 	//reset all the tanks
 	for (const auto& a : AllTanks) {
 		a->SetupTank();
+		a->SetColor(FColor(255,0,0));
 	}
 
 	//move the tanks to the spawnpoints

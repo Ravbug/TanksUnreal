@@ -7,6 +7,7 @@
 #include "GameFramework/Pawn.h"
 #include "Components/WidgetComponent.h"
 #include "TankDamager.h"
+#include "Components/StaticMeshComponent.h"
 #include "Tank.generated.h"
 
 UCLASS()
@@ -75,6 +76,7 @@ public:
 	void ChargeShot(float speed);
 	void Fire();
 	void Die();
+	void SetColor(const FColor& color);
 
 
 	//for blueprint

@@ -3,6 +3,7 @@
 
 #include "Tank.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 #define FPSSCALE deltaTime / evalNormal
 
@@ -76,6 +77,10 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ATank::Fire);
 }
 
+/**
+ * Move the tank. Called by the player input axis
+ * @param amount the amount to move each scaled tick
+ */
 void ATank::Move(float amount)
 {
 	if (controlEnabled) {
@@ -85,6 +90,10 @@ void ATank::Move(float amount)
 	}
 }
 
+/**
+ * Turn the tank. Called by the player input axis
+ * @param amount the rate to turn each scaled tick
+ */
 void ATank::Turn(float amount)
 {
 	if (controlEnabled) {
@@ -94,6 +103,10 @@ void ATank::Turn(float amount)
 	}
 }
 
+/**
+ * Charge up the shot. 
+ * @param speed the rate to charge the shot each scaled tick
+ */
 void ATank::ChargeShot(float speed)
 {
 	if (speed > 0.1) {
@@ -108,7 +121,7 @@ void ATank::ChargeShot(float speed)
 }
 
 /**
- * Fire a bullet based on the charge amount
+ * Fire a bullet based on the charge amount.
  */
 void ATank::Fire()
 {
@@ -172,6 +185,31 @@ void ATank::Die()
 	DieEffect();
 }
 
+/**
+ * Sets the color of the tank. This generates a new material instance.
+ * @param color the color to set the material to
+ */
+void ATank::SetColor(const FColor& color)
+{
+	//get all the static mesh components
+	TArray<UStaticMeshComponent*> StaticMeshes;
+	this->GetComponents<UStaticMeshComponent>(StaticMeshes);
+
+	if (StaticMeshes.Num() > 0) {
+		//create a dynamic material instance and set the color
+		auto material = UMaterialInstanceDynamic::Create(StaticMeshes[0]->GetMaterial(0), StaticMeshes[0]);
+		material->SetVectorParameterValue(FName("TankColor"), color);
+
+		//assign the material
+		for (auto& sm : StaticMeshes) {
+			sm->SetMaterial(0, material);
+		}
+	}
+}
+
+/**
+ * Reset this tank
+ */
 void ATank::SetupTank()
 {
 	IsAlive = true;
