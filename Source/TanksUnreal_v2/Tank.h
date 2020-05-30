@@ -35,6 +35,7 @@ public:
 
 protected:
 	float velocity;
+	bool isMoving = false;
 
 	UPROPERTY(BlueprintReadWrite)
 	int maxSpeed = 6;
@@ -101,6 +102,12 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void DieEffect();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void MovingAction();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void StopMovingAction();
 
 	UFUNCTION()
 		void BeginOverlap(UPrimitiveComponent* OverlappedComponent,

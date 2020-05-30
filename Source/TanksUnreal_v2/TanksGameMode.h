@@ -48,6 +48,8 @@ protected:
 	int numRounds = 3;
 	int round = 1;
 
+	void UpdateActiveTanks();
+
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
 		TSubclassOf<UUserWidget> LevelStartingWidget;
 

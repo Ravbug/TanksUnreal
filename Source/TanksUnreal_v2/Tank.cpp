@@ -76,6 +76,20 @@ void ATank::Tick(float DeltaTime)
 	FVector v = GetActorForwardVector().RotateAngleAxis(90, FVector::UpVector);
 	v *= velocity;
 	SetActorLocation(GetActorLocation() + v);
+
+	//play effects
+	if (abs(velocity) > 0.5) {
+		if (!isMoving) {
+			isMoving = true;
+			MovingAction();
+		}
+	}
+	else {
+		if (isMoving) {
+			isMoving = false;
+			StopMovingAction();
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -194,6 +208,7 @@ void ATank::Die()
 	CollisionRoot->SetSimulatePhysics(false);
 	CollisionRoot->SetGenerateOverlapEvents(false);
 	DieEffect();
+	SetActorTickEnabled(false);
 }
 
 /**
@@ -238,4 +253,8 @@ void ATank::SetupTank()
 	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	CollisionRoot->SetEnableGravity(true);
 	CollisionRoot->SetGenerateOverlapEvents(true);
+
+	SetActorTickEnabled(true);
+
+	StopMovingAction();
 }

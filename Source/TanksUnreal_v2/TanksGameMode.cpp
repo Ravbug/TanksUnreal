@@ -18,6 +18,7 @@ void ATanksGameMode::EndGame()
 			maxScoreTank = a;
 		}
 	}
+	ClearViewport();
 	DisplayHeaderText(FString(L"Game Winner: <Noteworthy>") + ActiveTanks[0]->GetName() + FString(L"</>"));
 	DisplayScores(GetScoreString());
 
@@ -71,6 +72,8 @@ void ATanksGameMode::SetupRound()
 
 	//display Round header
 	DisplayHeaderText(FString::Printf(TEXT("<Emphasis>Round %d</>"),round));
+
+	UpdateActiveTanks();
 
 	//timer to start beginround
 	SET_TIMER(&ATanksGameMode::BeginRound, 3);
@@ -141,15 +144,19 @@ void ATanksGameMode::Tick(float deltaTime)
 	Super::Tick(deltaTime);
 
 	//update active tanks
+	UpdateActiveTanks();
+
+	if (ActiveTanks.Num() <= 1) {
+		RoundComplete();
+	}
+}
+
+void ATanksGameMode::UpdateActiveTanks() {
 	ActiveTanks.Empty();
 	for (auto t : AllTanks) {
 		if (t->IsAlive) {
 			ActiveTanks.Add(t);
 		}
-	}
-
-	if (ActiveTanks.Num() <= 1) {
-		RoundComplete();
 	}
 }
 
