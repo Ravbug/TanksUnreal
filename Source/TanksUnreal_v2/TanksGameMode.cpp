@@ -4,11 +4,16 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
 #include "TankPlayerController.h"
+#include "TanksGameInstance.h"
 #include <algorithm>    // std::min
 
 //shortcut for setting timers
 #define SET_TIMER(method,seconds) FTimerHandle handle; GetWorld()->GetTimerManager().SetTimer(handle, this, method, seconds, false)
 
+//corresponds to selected index 0,1,2 on the join players screen
+enum PlayerModes {
+	Human, Computer, None
+};
 
 void ATanksGameMode::EndGame()
 {
@@ -112,7 +117,8 @@ void ATanksGameMode::BeginPlay()
 	//reset static counts for numbering
 	ATankPlayerController::ResetStaticCount();
 
-	//adapted from https://www.youtube.com/watch?v=3lN2eZIgAQ0 (local shared-screen multiplayer game in blueprint)
+	//get the game instance to know what players to spawn
+	auto gameinstance = Cast<UTanksGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	//get all the player starts
 	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()),APlayerStart::StaticClass(),playerStarts);
@@ -120,12 +126,20 @@ void ATanksGameMode::BeginPlay()
 	//For the max number of players, or until all of the playerStarts have been filled
 	for (int i = 0; i < std::min(maxPlayerCount,playerStarts.Num()); ++i) {
 
-		//Attempt to create a player
-		//If the player is created, the Default Pawn for this GameMode is also spawned
-		//at a player start and the pawn is automatically possessed.
-		//See the GameMode blueprint to change the pawn that is created.
-		UGameplayStatics::CreatePlayer(GetWorld(),i);
-		
+		switch (gameinstance->joinedPlayerStatus[i]) {
+		case PlayerModes::Human:
+			//Attempt to create a player
+			//If the player is created, the Default Pawn for this GameMode is also spawned
+			//at a player start and the pawn is automatically possessed.
+			//See the GameMode blueprint to change the pawn that is created.
+			auto controller = UGameplayStatics::CreatePlayer(GetWorld());
+			break;
+		case PlayerModes::Computer:
+			break;
+			//attempt to create an AI
+		}
+		//if none, do not create a player or a AI
+		//the first 2 comboboxes are set to not allow None to be set.
 	}
 	//load tanks into the array
 	TArray<AActor*> temp;
