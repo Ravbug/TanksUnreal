@@ -109,22 +109,11 @@ void ATanksGameMode::BeginPlay()
 		auto pstart = Cast<APlayerStart>(playerStarts[i]);
 		if (pstart != nullptr) {
 
-			//attempt to create a controller
+			//Attempt to create a player
+			//If the player is created, the Default Pawn for this GameMode is also spawned
+			//at a player start and the pawn is automatically possessed.
+			//See the GameMode blueprint to change the pawn that is created.
 			auto controller = UGameplayStatics::CreatePlayer(GetWorld(),i);
-			if (controller == nullptr) {
-				continue;
-			}
-
-			//attempt to spawn the actor
-			FActorSpawnParameters params;
-			params.bNoFail = true;
-			auto spawned = GetWorld()->SpawnActor<ATank>(APlayerActorClass,pstart->GetActorTransform(),params);
-			if (spawned != nullptr) {
-				controller->Possess(spawned);
-			}
-			else {
-				UGameplayStatics::RemovePlayer(controller,false);
-			}
 		}
 	}
 	//load tanks into the array

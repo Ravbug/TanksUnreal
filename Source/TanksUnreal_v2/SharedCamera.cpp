@@ -39,6 +39,8 @@ void ASharedCamera::BeginPlay()
 	gamemode = Cast<ATanksGameMode>((GetWorld()->GetAuthGameMode()));
 
 	//set view targets for player controllers
+	//this causes all of the players to "connect" their views to this actor's camera.
+	//Without this, the engine would treat these as separated and input may not work. 
 	TArray<AActor*> playerControllers;
 	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()), APlayerController::StaticClass(), playerControllers);
 	for (auto a : playerControllers) {
