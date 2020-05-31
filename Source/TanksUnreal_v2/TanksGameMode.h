@@ -52,6 +52,8 @@ protected:
 	//the current round
 	int round = 1;
 
+	int pointsToWin = 3;
+
 	void UpdateActiveTanks();
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
@@ -71,6 +73,8 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void ClearViewport();
+
+	void Return();
 
 private:
 	void BeginPlay() override;

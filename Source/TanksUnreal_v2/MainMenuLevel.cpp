@@ -2,6 +2,7 @@
 
 
 #include "MainMenuLevel.h"
+#include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 void AMainMenuLevel::BeginPlay() {
@@ -12,5 +13,14 @@ void AMainMenuLevel::BeginPlay() {
 	auto camera = UGameplayStatics::GetActorOfClass(Cast<UObject>(GetWorld()),ACameraActor::StaticClass());
 
 	//set the first player controller's camera to the camera
-	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(camera);
+	auto firstController = GetWorld()->GetFirstPlayerController();
+	firstController->SetViewTargetWithBlend(camera);
+
+	//show the mouse cursor
+	firstController->bShowMouseCursor = true;
+
+	//unconstrain the camera aspect
+	auto cameracomponent = Cast<UCameraComponent>(camera->GetComponentByClass(UCameraComponent::StaticClass()));
+	cameracomponent->SetConstraintAspectRatio(false);
+
 }

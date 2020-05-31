@@ -24,18 +24,13 @@ void ATanksGameMode::EndGame()
 	DisplayScores(GetScoreString());
 
 	//also display the go back to the menu button
+	SET_TIMER(&ATanksGameMode::Return, 3);
 }
 
 void ATanksGameMode::RoundComplete()
 {
 	SetActorTickEnabled(false);
 
-	if (round < numRounds) {
-		SET_TIMER(&ATanksGameMode::SetupRound, 3);
-	}
-	else {
-		SET_TIMER(&ATanksGameMode::EndGame, 3);
-	}
 	++round;
 
 	//one winner?
@@ -50,6 +45,22 @@ void ATanksGameMode::RoundComplete()
 		DisplayHeaderText(FString::Printf(TEXT("It's a tie!")));
 	}
 	
+	//number of points reached?
+	bool gameOver = false;
+	for (const auto& a : AllTanks) {
+		if (a->points >= pointsToWin) {
+			gameOver = true;
+			break;
+		}
+	}
+
+	if (!gameOver) {
+		SET_TIMER(&ATanksGameMode::SetupRound, 3);
+	}
+	else {
+		SET_TIMER(&ATanksGameMode::EndGame, 3);
+	}
+
 	//disable the tanks
 	for (const auto& a : AllTanks) {
 		a->controlEnabled = false;
@@ -172,4 +183,11 @@ FString ATanksGameMode::GetScoreString()
 	}
 	str += FString("</>");
 	return str;
+}
+
+/**
+ * Return to the menu
+ */
+void ATanksGameMode::Return() {
+	UGameplayStatics::OpenLevel(GetWorld(), FName("MainMenu"));
 }
