@@ -39,13 +39,17 @@ public:
 
 	FString GetScoreString();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int numRounds = 3;
+
+
 protected:
 
 	TArray<ATank*> AllTanks;
 	TArray<ATank*> ActiveTanks;
 	TArray<AActor*> playerStarts;
 
-	int numRounds = 3;
+	//the current round
 	int round = 1;
 
 	void UpdateActiveTanks();
@@ -70,7 +74,4 @@ protected:
 
 private:
 	void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadonly, meta = (AllowPrivateAccess = "true"), Category = "Levels")
-		TArray<FString> Levels;
 };
