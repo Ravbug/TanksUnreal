@@ -14,6 +14,8 @@ class TANKSUNREAL_V2_API UTanksGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 public:
+	UTanksGameInstance();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<int> joinedPlayerStatus;
 };

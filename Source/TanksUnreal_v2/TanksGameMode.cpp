@@ -132,7 +132,7 @@ void ATanksGameMode::BeginPlay()
 			//If the player is created, the Default Pawn for this GameMode is also spawned
 			//at a player start and the pawn is automatically possessed.
 			//See the GameMode blueprint to change the pawn that is created.
-			auto controller = UGameplayStatics::CreatePlayer(GetWorld());
+			UGameplayStatics::CreatePlayer(GetWorld());
 			break;
 		case PlayerModes::Computer:
 			break;
@@ -141,6 +141,8 @@ void ATanksGameMode::BeginPlay()
 		//if none, do not create a player or a AI
 		//the first 2 comboboxes are set to not allow None to be set.
 	}
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
+
 	//load tanks into the array
 	TArray<AActor*> temp;
 	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()), ATank::StaticClass(), temp);
