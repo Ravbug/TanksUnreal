@@ -106,19 +106,15 @@ void ATanksGameMode::BeginPlay()
 	//get all the player starts
 	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()),APlayerStart::StaticClass(),playerStarts);
 
-	//For the max number of players
-	for (int i = 0; i < maxPlayerCount; ++i) {
-		//locate the player start that can spawn this player (using PlayerStartTag, configurable in inspector)
-		//spawn if this is a valid playerstart
-		auto pstart = Cast<APlayerStart>(playerStarts[i]);
-		if (pstart != nullptr) {
+	//For the max number of players, or until all of the playerStarts have been filled
+	for (int i = 0; i < std::min(maxPlayerCount,playerStarts.Num()); ++i) {
 
-			//Attempt to create a player
-			//If the player is created, the Default Pawn for this GameMode is also spawned
-			//at a player start and the pawn is automatically possessed.
-			//See the GameMode blueprint to change the pawn that is created.
-			UGameplayStatics::CreatePlayer(GetWorld(),i);
-		}
+		//Attempt to create a player
+		//If the player is created, the Default Pawn for this GameMode is also spawned
+		//at a player start and the pawn is automatically possessed.
+		//See the GameMode blueprint to change the pawn that is created.
+		UGameplayStatics::CreatePlayer(GetWorld(),i);
+		
 	}
 	//load tanks into the array
 	TArray<AActor*> temp;
@@ -144,6 +140,9 @@ void ATanksGameMode::Tick(float deltaTime)
 	}
 }
 
+/**
+ * Update the list of active tanks.
+ */
 void ATanksGameMode::UpdateActiveTanks() {
 	ActiveTanks.Empty();
 	for (auto t : AllTanks) {
