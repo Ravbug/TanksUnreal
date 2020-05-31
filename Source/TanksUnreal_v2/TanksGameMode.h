@@ -77,5 +77,5 @@ protected:
 	void Return();
 
 private:
-	void BeginPlay() override;
+	void StartPlay() override;
 };

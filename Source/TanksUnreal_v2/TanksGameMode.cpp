@@ -110,12 +110,15 @@ void ATanksGameMode::BeginRound() {
 }
 
 
-void ATanksGameMode::BeginPlay()
+void ATanksGameMode::StartPlay()
 {
-	Super::BeginPlay();
+	Super::StartPlay();
 
 	//reset static counts for numbering
 	ATankPlayerController::ResetStaticCount();
+
+	//remove the first controller and its pawn - this will be managed later
+	UGameplayStatics::RemovePlayer(GetWorld()->GetFirstPlayerController(),true);
 
 	//get the game instance to know what players to spawn
 	auto gameinstance = Cast<UTanksGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));

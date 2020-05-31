@@ -21,6 +21,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FVector2D minMaxDistance = FVector2D(1000,6000);
 
+	void CaptureAllPlayerControllers();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

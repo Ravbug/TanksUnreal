@@ -148,11 +148,13 @@ void ATank::ChargeShot(float speed)
  */
 void ATank::Fire()
 {
-	SapwnBullet(UKismetMathLibrary::MapRangeClamped(currentPercent,0,1,minMaxBulletSpeed.X,minMaxBulletSpeed.Y));
+	if (controlEnabled) {
+		SapwnBullet(UKismetMathLibrary::MapRangeClamped(currentPercent, 0, 1, minMaxBulletSpeed.X, minMaxBulletSpeed.Y));
 
-	//reset charge bar
-	SetChargeBar(currentPercent = 0);
-	ChargeShotBar->SetVisibility(false);
+		//reset charge bar
+		SetChargeBar(currentPercent = 0);
+		ChargeShotBar->SetVisibility(false);
+	}
 }
 
 /**

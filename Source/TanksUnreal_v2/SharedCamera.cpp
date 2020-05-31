@@ -37,7 +37,9 @@ void ASharedCamera::BeginPlay()
 	origZ = GetActorLocation().Z;
 
 	gamemode = Cast<ATanksGameMode>((GetWorld()->GetAuthGameMode()));
+}
 
+void ASharedCamera::CaptureAllPlayerControllers() {
 	//set view targets for player controllers
 	//this causes all of the players to "connect" their views to this actor's camera.
 	//Without this, the engine would treat these as separated and input may not work. 
@@ -48,10 +50,21 @@ void ASharedCamera::BeginPlay()
 	}
 }
 
+int tick = 0;
+
 // Called every frame
 void ASharedCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	//fix a race condition - delays capturing cameras until the second frame rendered
+	if (tick == 1) {
+		CaptureAllPlayerControllers();
+	}
+	else if (tick < 3) {
+		++tick;
+	}
+
 
 	//auto newPos = GetAverageLocation(gamemode->Players);
 
