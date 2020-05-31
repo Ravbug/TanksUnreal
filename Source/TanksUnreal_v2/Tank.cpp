@@ -61,8 +61,6 @@ void ATank::BeginPlay()
 	CollisionRoot->OnComponentBeginOverlap.AddDynamic(this, &ATank::BeginOverlap);
 
 	SetupTank();
-
-	UpdateName();
 }
 
 // Called every frame
@@ -134,7 +132,7 @@ void ATank::Turn(float amount)
  */
 void ATank::ChargeShot(float speed)
 {
-	if (speed > 0.1) {
+	if (controlEnabled && speed > 0.1) {
 		ChargeShotBar->SetVisibility(true);
 		currentPercent += speed * chargeRate * FPSSCALE;
 		//update progress bar
@@ -257,4 +255,6 @@ void ATank::SetupTank()
 	SetActorTickEnabled(true);
 
 	StopMovingAction();
+
+	UpdateName();
 }

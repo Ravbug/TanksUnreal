@@ -3,6 +3,7 @@
 #include "TanksGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
+#include "TankPlayerController.h"
 #include <algorithm>    // std::min
 
 //shortcut for setting timers
@@ -97,6 +98,9 @@ void ATanksGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//reset static counts for numbering
+	ATankPlayerController::ResetStaticCount();
+
 	//adapted from https://www.youtube.com/watch?v=3lN2eZIgAQ0 (local shared-screen multiplayer game in blueprint)
 
 	//get all the player starts
@@ -113,7 +117,7 @@ void ATanksGameMode::BeginPlay()
 			//If the player is created, the Default Pawn for this GameMode is also spawned
 			//at a player start and the pawn is automatically possessed.
 			//See the GameMode blueprint to change the pawn that is created.
-			auto controller = UGameplayStatics::CreatePlayer(GetWorld(),i);
+			UGameplayStatics::CreatePlayer(GetWorld(),i);
 		}
 	}
 	//load tanks into the array

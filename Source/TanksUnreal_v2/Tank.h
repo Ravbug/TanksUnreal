@@ -49,7 +49,7 @@ protected:
 	//this is % of health
 	float currentHealth = 1;
 	UPROPERTY()
-		FVector2D damageDistMinMax = FVector2D(0,300);
+		FVector2D damageDistMinMax = FVector2D(0,400);
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

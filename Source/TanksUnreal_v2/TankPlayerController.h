@@ -21,6 +21,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	FString GetName();
 	virtual FString GetName_Implementation() override;
+
+	static void ResetStaticCount() {
+		staticPlayerNum = 0;
+	}
+
 protected:
 	static uint8 staticPlayerNum;
 	uint8 playerNum;
