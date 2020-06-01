@@ -25,8 +25,7 @@ public:
 	static void ResetStaticCount() {
 		staticPlayerNum = 0;
 	}
-
-protected:
+private:
 	static uint8 staticPlayerNum;
 	uint8 playerNum;
 };

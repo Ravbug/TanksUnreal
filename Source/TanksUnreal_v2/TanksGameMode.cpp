@@ -5,6 +5,7 @@
 #include "GameFramework/PlayerStart.h"
 #include "TankPlayerController.h"
 #include "TanksGameInstance.h"
+#include "TankAIController.h"
 #include <algorithm>    // std::min
 
 //shortcut for setting timers
@@ -145,8 +146,9 @@ void ATanksGameMode::StartPlay()
 				UGameplayStatics::CreatePlayer(GetWorld())->Possess(spawned);
 				break;
 			case PlayerModes::Computer:
+				//spawn an AI controller and possess the tank with it
+				GetWorld()->SpawnActor<ATankAIController>(ATankAIController::StaticClass(), playerStarts[i]->GetActorTransform(), params)->Possess(spawned);
 				break;
-				//attempt to create an AI
 			}
 		}
 	}
