@@ -127,23 +127,30 @@ void ATanksGameMode::StartPlay()
 	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()),APlayerStart::StaticClass(),playerStarts);
 
 	//For the max number of players, or until all of the playerStarts have been filled
-	for (int i = 0; i < std::min(maxPlayerCount,playerStarts.Num()); ++i) {
+	for (int i = 0; i < std::min(maxPlayerCount, playerStarts.Num()); ++i) {
 
-		switch (gameinstance->joinedPlayerStatus[i]) {
-		case PlayerModes::Human:
-			//Attempt to create a player
-			//If the player is created, the Default Pawn for this GameMode is also spawned
-			//at a player start and the pawn is automatically possessed.
-			//See the GameMode blueprint to change the pawn that is created.
-			UGameplayStatics::CreatePlayer(GetWorld());
-			break;
-		case PlayerModes::Computer:
-			break;
-			//attempt to create an AI
-		}
 		//if none, do not create a player or a AI
-		//the first 2 comboboxes are set to not allow None to be set.
+		//the first 2 comboboxes are set to not allow None to be set
+		if (gameinstance->joinedPlayerStatus[i] != PlayerModes::None) {
+			FActorSpawnParameters params;
+			params.bNoFail = true;
+			auto spawned = GetWorld()->SpawnActor<ATank>(APlayerActorClass, playerStarts[i]->GetActorTransform(), params);
+
+			switch (gameinstance->joinedPlayerStatus[i]) {
+			case PlayerModes::Human:
+				//Attempt to create a player
+				//the gamemode default pawn is set to None on purpose. This ensures
+				//that the create player does not try to also create a pawn
+				//which prevents player creation from failing
+				UGameplayStatics::CreatePlayer(GetWorld())->Possess(spawned);
+				break;
+			case PlayerModes::Computer:
+				break;
+				//attempt to create an AI
+			}
+		}
 	}
+
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 
 	//load tanks into the array
