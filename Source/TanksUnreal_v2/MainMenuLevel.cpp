@@ -22,5 +22,4 @@ void AMainMenuLevel::BeginPlay() {
 	//unconstrain the camera aspect
 	auto cameracomponent = Cast<UCameraComponent>(camera->GetComponentByClass(UCameraComponent::StaticClass()));
 	cameracomponent->SetConstraintAspectRatio(false);
-
 }
