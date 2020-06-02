@@ -152,7 +152,12 @@ void ATanksGameMode::StartPlay()
 		}
 	}
 
-	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
+	{
+		auto firstPlayer = GetWorld()->GetFirstPlayerController();
+		if (firstPlayer != nullptr) {
+			firstPlayer->bShowMouseCursor = false;
+		}
+	}
 
 	//load tanks into the array
 	TArray<AActor*> temp;

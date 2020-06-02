@@ -10,6 +10,7 @@
 #include "TanksGameMode.h"
 
 #define SET_TIMER(method,seconds) GetWorld()->GetTimerManager().SetTimer(handle, this, method, seconds, false)
+#define facing_angle(a,b) AngleBetweenDirections(a,b) - PI / 2
 
 uint8 ATankAIController::staticPlayerNum = 0;
 
@@ -63,11 +64,11 @@ bool ATankAIController::RotateToFacePos(const FVector& b)
 	FVector dir = a - b;
 	FVector tdir = tank->GetActorForwardVector();
 
-	auto angle = AngleBetweenDirections(tdir, dir) - PI / 2;
+	auto angle = facing_angle(tdir, dir);
 
 	//turn in the appropriate direction
 	//TODO: change the amount based on the angle
-	if (FMath::Abs(angle) > 0.01) {
+	if (FMath::Abs(angle) > 0.05) {
 		if (angle > 0) {
 			tank->Turn(-1);
 		}
@@ -86,7 +87,7 @@ bool ATankAIController::RotateToFacePos(const FVector& b)
  */
 void ATankAIController::AITick()
 {
-	GLog->Logf(TEXT("%s"), AController::GetPawn());
+	//GLog->Logf(TEXT("%s"), AController::GetPawn());
 
 	//choose a new place to drive
 	chassisTargetPos = FVector(FMath::RandRange(-4000,4000), FMath::RandRange(-4000, 4000),0);
@@ -152,7 +153,7 @@ void ATankAIController::DefenseTick()
 		Fire(closest->GetActorLocation());
 	}
 
-	tank->Move(-0.2);
+	tank->Move(-0.1);
 }
 
 /**
@@ -163,7 +164,8 @@ void ATankAIController::DriveTick()
 	// configure navigation request
 	auto navsys = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 	auto navdata = navsys->GetNavDataForProps(GetNavAgentPropertiesRef());
-	FPathFindingQuery query(this,*navdata,tank->GetActorLocation(),chassisTargetPos);
+	auto pos = tank->GetActorLocation();
+	FPathFindingQuery query(this,*navdata,pos,chassisTargetPos);
 
 	//perform navigation calculation
 	auto result = navsys->FindPathSync(query, EPathFindingMode::Regular);
@@ -176,14 +178,20 @@ void ATankAIController::DriveTick()
 
 	auto path = result.Path->GetPathPoints();
 	if (path.Num() > 1) {
-		//drive towards path[1]
+		//drive towards path[1] with automatic speed
 		RotateToFacePos(path[1]);
-		tank->Move(0.2);
+		tank->Move(FMath::GetMappedRangeValueClamped(FVector2D(0,2000),FVector2D(0,1),FVector::Distance(pos,path[1])));
 	}
 
-	for (int i = 0; i < path.Num() - 1; i++) {
-		DrawDebugLine(GetWorld(), path[i], path[i + 1], FColor::Green, 0.0f, 0.0f, 5);
+	//if angled at another tank, shoot at it
+	auto target = GetClosestTank()->GetActorLocation();
+	if (FMath::Abs(facing_angle(pos, target)) < 0.05) {
+		Fire(target);
 	}
+
+	/*for (int i = 0; i < path.Num() - 1; i++) {
+		DrawDebugLine(GetWorld(), path[i], path[i + 1], FColor::Green, 0.0f, 0.0f, 5);
+	}*/
 }
 
 void ATankAIController::Tick(float deltaTime) {
@@ -202,6 +210,4 @@ void ATankAIController::Tick(float deltaTime) {
 		DefenseTick();
 		break;
 	}
-
-	//if angled at another tank, shoot at it
 }
