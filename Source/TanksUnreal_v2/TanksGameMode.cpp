@@ -139,6 +139,9 @@ void ATanksGameMode::StartPlay()
 			params.bNoFail = true;
 			auto spawned = GetWorld()->SpawnActor<ATank>(APlayerActorClass, playerStarts[i]->GetActorTransform(), params);
 
+			//set tank color
+			spawned->SetColor(tankColors[i]);
+
 			if (gameinstance->joinedPlayerStatus[i] == PlayerModes::Human) {
 				++numPCs;
 				//Attempt to create a player

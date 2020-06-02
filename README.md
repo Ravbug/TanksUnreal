@@ -41,7 +41,8 @@ Goal is to reach parity with the Unity game, and perhaps extend on it.
 - [x] Build level
 - [x] Set up lightmass and scene lighting
 - [x] Barebones AI
+- [x] Fix naming system
+- [x] Tank Colors
+- [ ] Graphics Settings
 - [ ] Networking support
 - [ ] Mobile Touch
-- [ ] Graphics Settings
-- [x] Fix naming system

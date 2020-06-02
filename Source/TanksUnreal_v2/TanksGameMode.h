@@ -65,6 +65,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
 		TSubclassOf<UUserWidget> GameCompleteWidget;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Colors")
+		TArray<FColor> tankColors;
+
 	UFUNCTION(BlueprintImplementableEvent)
 		void DisplayScores(const FString& str);
 
