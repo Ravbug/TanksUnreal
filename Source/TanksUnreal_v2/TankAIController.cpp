@@ -39,7 +39,7 @@ void ATankAIController::OnUnPossess()
 }
 
 /**
- * Calculate the angle between two FVectors in 2D space (X and Y)
+ * Calculate the angle between two directional FVectors
  * @param a First vector
  * @param b Second vector
  * @returns the angle between a and b
@@ -52,7 +52,12 @@ float ATankAIController::AngleBetweenDirections(FVector& a, FVector& b)
 	return FMath::Acos(FVector::DotProduct(a,b));
 }
 
-void ATankAIController::RotateToFacePos(const FVector& b)
+/**
+ * Rotate the tank to face the target position. This invokes Turn() on the tank
+ * @param pos the position to face
+ * @return true if the position is directly ahead, false otherwise
+ */
+bool ATankAIController::RotateToFacePos(const FVector& b)
 {
 	FVector a = tank->GetActorLocation();
 	FVector dir = a - b;
@@ -62,11 +67,17 @@ void ATankAIController::RotateToFacePos(const FVector& b)
 
 	//turn in the appropriate direction
 	//TODO: change the amount based on the angle
-	if (angle > 0) {
-		tank->Turn(-1);
+	if (FMath::Abs(angle) > 0.01) {
+		if (angle > 0) {
+			tank->Turn(-1);
+		}
+		else {
+			tank->Turn(1);
+		}
+		return false;
 	}
 	else {
-		tank->Turn(1);
+		return true;
 	}
 }
 
@@ -122,6 +133,9 @@ void ATankAIController::DefenseTick()
 	RotateToFacePos(closest->GetActorLocation());
 }
 
+/**
+ * Tick the driving logic once. Calls Move() and Turn() on the tank to drive it.
+ */
 void ATankAIController::DriveTick()
 {
 	// configure navigation request

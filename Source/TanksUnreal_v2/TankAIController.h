@@ -30,7 +30,7 @@ protected:
 	void OnUnPossess() override;
 
 	float AngleBetweenDirections(FVector& A, FVector& B);
-	void RotateToFacePos(const FVector& pos);
+	bool RotateToFacePos(const FVector& pos);
 
 	enum State {
 		Fleeing, Fighting
