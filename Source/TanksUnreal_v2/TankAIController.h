@@ -38,6 +38,7 @@ protected:
 	};
 
 	State state = State::Fighting;
+	bool pursueInDriving = false;
 	FVector chassisTargetPos = FVector(0, 0, 0);
 	float LastShotTime = 0;
 	float minShotDelay = 0.75;	

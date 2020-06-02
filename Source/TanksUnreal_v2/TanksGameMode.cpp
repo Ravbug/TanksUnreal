@@ -127,6 +127,7 @@ void ATanksGameMode::StartPlay()
 	//get all the player starts
 	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()),APlayerStart::StaticClass(),playerStarts);
 
+	int numPCs = 0;
 	//For the max number of players, or until all of the playerStarts have been filled
 	for (int i = 0; i < std::min(maxPlayerCount, playerStarts.Num()); ++i) {
 
@@ -138,6 +139,7 @@ void ATanksGameMode::StartPlay()
 			auto spawned = GetWorld()->SpawnActor<ATank>(APlayerActorClass, playerStarts[i]->GetActorTransform(), params);
 
 			if (gameinstance->joinedPlayerStatus[i] == PlayerModes::Human) {
+				++numPCs;
 				//Attempt to create a player
 				//the gamemode default pawn is set to None on purpose. This ensures
 				//that the create player does not try to also create a pawn
@@ -150,6 +152,11 @@ void ATanksGameMode::StartPlay()
 				ai->Possess(spawned);
 			}
 		}
+	}
+
+	//if all AI battle, spawn one dummy player controller for the camera
+	if (numPCs == 0) {
+		UGameplayStatics::CreatePlayer(GetWorld());
 	}
 
 	{
@@ -209,11 +216,10 @@ Create a formatted score string to display in the viewport
 */
 FString ATanksGameMode::GetScoreString()
 {
-	FString str("<Emphasis>");
+	FString str("");
 	for (const auto& t : AllTanks) {
-		str += t->GetName() + FString::Printf(TEXT(":%d\t"),t->points);
+		str += FString::Printf(TEXT("%s: %d\n"), *(t->GetName()), t->points);
 	}
-	str += FString("</>");
 	return str;
 }
 

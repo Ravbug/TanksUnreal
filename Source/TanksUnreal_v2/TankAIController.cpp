@@ -98,6 +98,9 @@ void ATankAIController::AITick()
 	//invert state
 	invert_mode();
 
+	//whether to pursue or go to a random position on the board
+	pursueInDriving = FMath::RandRange(0, 100) < 80;
+
 	SET_TIMER(&ATankAIController::AITick, FMath::RandRange(5,10));
 }
 
@@ -175,7 +178,7 @@ void ATankAIController::DriveTick()
 	auto pos = tank->GetActorLocation();
 	auto closest = GetClosestTank();
 	FVector end;
-	if (closest == nullptr) {
+	if (closest == nullptr || !pursueInDriving) {
 		end = chassisTargetPos;
 	}
 	else {
