@@ -11,6 +11,9 @@
 
 #define SET_TIMER(method,seconds) GetWorld()->GetTimerManager().SetTimer(handle, this, method, seconds, false)
 #define facing_angle(a,b) AngleBetweenDirections(a,b) - PI / 2
+#define invert_mode() state = state == State::Fleeing ? State::Fighting : State::Fleeing
+
+#define NOW GetWorld()->GetTimeSeconds()
 
 uint8 ATankAIController::staticPlayerNum = 0;
 
@@ -93,7 +96,7 @@ void ATankAIController::AITick()
 	chassisTargetPos = FVector(FMath::RandRange(-4000,4000), FMath::RandRange(-4000, 4000),0);
 
 	//invert state
-	state = state == State::Fleeing ? State::Fighting : State::Fleeing;
+	invert_mode();
 
 	SET_TIMER(&ATankAIController::AITick, FMath::RandRange(5,10));
 }
@@ -107,7 +110,8 @@ ATank* ATankAIController::GetClosestTank()
 	auto gamemode = Cast<ATanksGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	ATank* closest = nullptr;
 	float closestDist = 10000;
-	for (const auto& t : gamemode->GetActiveTanks()) {
+	auto tanks = gamemode->GetActiveTanks();
+	for (const auto& t : tanks) {
 		if (t == tank) {
 			continue;
 		}
@@ -126,14 +130,17 @@ ATank* ATankAIController::GetClosestTank()
  */
 void ATankAIController::Fire(const FVector& pos)
 {
-	auto now = unix_now();
+	auto now = NOW;
 	if (now - LastShotTime > minShotDelay) {
 		//set fire strength
-		tank->currentPercent = FMath::GetMappedRangeValueClamped(distanceToPower,FVector2D(0,1),FVector::Distance(tank->GetActorLocation(),pos));
+		tank->currentPercent = FMath::GetMappedRangeValueClamped(distanceToPower,FVector2D(0.1,1),FVector::Distance(tank->GetActorLocation(),pos));
 
 		//fire and mark time
 		tank->Fire();
 		LastShotTime = now;
+
+		//shot timing variance
+		minShotDelay = FMath::FRandRange(FMath::GetMappedRangeValueClamped(FVector2D(0.25,1),FVector2D(1.5,0.5),tank->currentPercent), 1.5);
 	}
 }
 
@@ -161,11 +168,25 @@ void ATankAIController::DefenseTick()
  */
 void ATankAIController::DriveTick()
 {
+
 	// configure navigation request
 	auto navsys = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 	auto navdata = navsys->GetNavDataForProps(GetNavAgentPropertiesRef());
 	auto pos = tank->GetActorLocation();
-	FPathFindingQuery query(this,*navdata,pos,chassisTargetPos);
+	auto closest = GetClosestTank();
+	FVector end;
+	if (closest == nullptr) {
+		end = chassisTargetPos;
+	}
+	else {
+		end = closest->GetActorLocation();
+		// too close to target?
+		if (FVector::Distance(end, tank->GetActorLocation()) < 1000) {
+			//either invert mode or run away
+			invert_mode();
+		}
+	}
+	FPathFindingQuery query(this,*navdata,pos,end);
 
 	//perform navigation calculation
 	auto result = navsys->FindPathSync(query, EPathFindingMode::Regular);
@@ -180,12 +201,23 @@ void ATankAIController::DriveTick()
 	if (path.Num() > 1) {
 		//drive towards path[1] with automatic speed
 		RotateToFacePos(path[1]);
-		tank->Move(FMath::GetMappedRangeValueClamped(FVector2D(0,2000),FVector2D(0,1),FVector::Distance(pos,path[1])));
+		auto dist = FVector::Distance(pos, path[1]);
+		tank->Move(FMath::GetMappedRangeValueClamped(FVector2D(0,2000),FVector2D(0,1),dist));
+
+		//at end of path? switch states
+		if (path.Num() == 2 && dist < 200) {
+			invert_mode();
+		}
 	}
 
 	//if angled at another tank, shoot at it
-	auto target = GetClosestTank()->GetActorLocation();
-	if (FMath::Abs(facing_angle(pos, target)) < 0.05) {
+	if (closest == nullptr) {
+		return;
+	}
+	auto target = closest->GetActorLocation();
+	auto forward = tank->GetActorForwardVector();
+	auto tdir = pos - target;
+	if (FMath::Abs(facing_angle(forward, tdir)) < 0.05) {
 		Fire(target);
 	}
 

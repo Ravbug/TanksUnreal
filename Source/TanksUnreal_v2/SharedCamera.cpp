@@ -110,7 +110,7 @@ double ASharedCamera::MaxDistance(TArray<ATank*>& vectors) {
 * @return (FVector): FVector representing the average x, y, and z coordinates of the FVectors
 */
 FVector ASharedCamera::GetAverageLocation(TArray<ATank*>& vectors) {
-	FVector average = FVector();
+	FVector average = FVector(0,0,0);
 	for (auto a : vectors) {
 		auto v = a->GetActorLocation();
 		average.X += v.X;

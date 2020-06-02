@@ -9,8 +9,6 @@
 #include "Misc/DateTime.h"
 #include "TankAIController.generated.h"
 
-#define unix_now() FDateTime::Now().ToUnixTimestamp()
-
 /**
  * 
  */
@@ -41,8 +39,8 @@ protected:
 
 	State state = State::Fighting;
 	FVector chassisTargetPos = FVector(0, 0, 0);
-	int64 LastShotTime = unix_now();
-	float minShotDelay = 1;	//3 seconds
+	float LastShotTime = 0;
+	float minShotDelay = 0.75;	
 
 	FVector2D distanceToPower = FVector2D(200,6000);
 
