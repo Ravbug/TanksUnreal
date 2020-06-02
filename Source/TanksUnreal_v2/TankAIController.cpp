@@ -120,6 +120,23 @@ ATank* ATankAIController::GetClosestTank()
 }
 
 /**
+ * Request to fire a shot. This may not fire a shot.
+ * @param pos the position to shoot at
+ */
+void ATankAIController::Fire(const FVector& pos)
+{
+	auto now = unix_now();
+	if (now - LastShotTime > minShotDelay) {
+		//set fire strength
+		tank->currentPercent = FMath::GetMappedRangeValueClamped(distanceToPower,FVector2D(0,1),FVector::Distance(tank->GetActorLocation(),pos));
+
+		//fire and mark time
+		tank->Fire();
+		LastShotTime = now;
+	}
+}
+
+/**
  * Angles the tank to face the closest tank on the board
  */
 void ATankAIController::DefenseTick()
@@ -130,7 +147,12 @@ void ATankAIController::DefenseTick()
 	}
 	
 	//figure out what side of the pawn the target is on
-	RotateToFacePos(closest->GetActorLocation());
+	auto closeEnough = RotateToFacePos(closest->GetActorLocation());
+	if (closeEnough) {
+		Fire(closest->GetActorLocation());
+	}
+
+	tank->Move(-0.2);
 }
 
 /**

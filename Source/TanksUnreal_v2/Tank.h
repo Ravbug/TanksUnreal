@@ -33,6 +33,8 @@ public:
 
 	void SetupTank();
 
+	float currentPercent = 0;
+
 protected:
 	float velocity;
 	bool isMoving = false;
@@ -43,7 +45,6 @@ protected:
 	float deltaTime = 0;					//deltatime stored from Tick()
 	const float evalNormal = 1.0 / 120;     //1 / the "normal" tick speed. Values in this game assume 120hz is the normal tick speed. To scale, multiply the value by deltaTime/evalNormal
 
-	float currentPercent = 0;
 	float chargeRate = 0.01;
 
 	//this is % of health

@@ -6,7 +6,10 @@
 #include "AIController.h"
 #include "TankController.h"
 #include "Tank.h"
+#include "Misc/DateTime.h"
 #include "TankAIController.generated.h"
+
+#define unix_now() FDateTime::Now().ToUnixTimestamp()
 
 /**
  * 
@@ -36,11 +39,17 @@ protected:
 		Fleeing, Fighting
 	};
 
-	State state;
+	State state = State::Fighting;
 	FVector chassisTargetPos = FVector(0, 0, 0);
+	int64 LastShotTime = unix_now();
+	float minShotDelay = 1;	//3 seconds
+
+	FVector2D distanceToPower = FVector2D(200,6000);
 
 	void AITick();
 	ATank* GetClosestTank();
+
+	void Fire(const FVector& pos);
 
 private:
 	void Tick(float deltaTime) override;
