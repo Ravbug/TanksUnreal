@@ -137,18 +137,17 @@ void ATanksGameMode::StartPlay()
 			params.bNoFail = true;
 			auto spawned = GetWorld()->SpawnActor<ATank>(APlayerActorClass, playerStarts[i]->GetActorTransform(), params);
 
-			switch (gameinstance->joinedPlayerStatus[i]) {
-			case PlayerModes::Human:
+			if (gameinstance->joinedPlayerStatus[i] == PlayerModes::Human) {
 				//Attempt to create a player
 				//the gamemode default pawn is set to None on purpose. This ensures
 				//that the create player does not try to also create a pawn
 				//which prevents player creation from failing
 				UGameplayStatics::CreatePlayer(GetWorld())->Possess(spawned);
-				break;
-			case PlayerModes::Computer:
+			}
+			else {
 				//spawn an AI controller and possess the tank with it
-				GetWorld()->SpawnActor<ATankAIController>(ATankAIController::StaticClass(), playerStarts[i]->GetActorTransform(), params)->Possess(spawned);
-				break;
+				auto ai = GetWorld()->SpawnActor<ATankAIController>(ATankAIController::StaticClass(), playerStarts[i]->GetActorTransform(), params);
+				ai->Possess(spawned);
 			}
 		}
 	}

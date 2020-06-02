@@ -24,10 +24,13 @@ public:
 	virtual FString GetName_Implementation() override;
 
 protected:
-	ATank* pawn = nullptr;
+	ATank* tank = nullptr;
 
 	void OnPossess(APawn* other) override;
 	void OnUnPossess() override;
+
+	float AngleBetweenDirections(FVector& A, FVector& B);
+	void RotateToFacePos(const FVector& pos);
 
 	enum State {
 		Fleeing, Fighting
@@ -41,11 +44,11 @@ protected:
 
 private:
 	void Tick(float deltaTime) override;
-	void BeginPlay() override {
-		AITick();
-	}
 
 	void DefenseTick();
+	void DriveTick();
+
+	FTimerHandle handle;
 
 	static uint8 staticPlayerNum;
 	uint8 playerNum;
