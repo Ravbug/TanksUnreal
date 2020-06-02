@@ -117,6 +117,7 @@ void ATanksGameMode::StartPlay()
 
 	//reset static counts for numbering
 	ATankPlayerController::ResetStaticCount();
+	ATankAIController::ResetStaticCount();
 
 	//remove the first controller and its pawn - this will be managed later
 	UGameplayStatics::RemovePlayer(GetWorld()->GetFirstPlayerController(),true);

@@ -31,11 +31,15 @@ FString ATankAIController::GetName_Implementation() {
 //track the pawn that this controller controls
 void ATankAIController::OnPossess(APawn* other)
 {
+	//the Super call is necessary to ensure the possess completes correctly
+	Super::OnPossess(other);
 	tank = Cast<ATank>(other);
 	AITick();
 }
 void ATankAIController::OnUnPossess()
 {
+	//the Super call is necessary to ensure the unpossess completes correctly
+	Super::OnUnPossess();
 	tank = nullptr;
 
 	//cancel the timer

@@ -44,4 +44,4 @@ Goal is to reach parity with the Unity game, and perhaps extend on it.
 - [ ] Networking support
 - [ ] Mobile Touch
 - [ ] Graphics Settings
-- [ ] Fix naming system
+- [x] Fix naming system

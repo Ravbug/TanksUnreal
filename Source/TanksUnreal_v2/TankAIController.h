@@ -24,6 +24,10 @@ public:
 		FString GetName();
 	virtual FString GetName_Implementation() override;
 
+	static void ResetStaticCount() {
+		staticPlayerNum = 0;
+	}
+
 protected:
 	ATank* tank = nullptr;
 
