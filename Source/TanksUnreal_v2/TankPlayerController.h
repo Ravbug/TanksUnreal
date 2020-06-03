@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "TankController.h"
+#include "Tank.h"
 #include "TankPlayerController.generated.h"
 
 /**
@@ -25,6 +26,24 @@ public:
 	static void ResetStaticCount() {
 		staticPlayerNum = 0;
 	}
+
+	//called to bind functionality to input
+	virtual void SetupInputComponent() override;
+
+	void OnPause();
+
+	void OnPossess(APawn* other) override;
+	void OnUnPossess() override;
+
+	//control methods
+	void Move(float amount);
+	void Turn(float amount);
+	void ChargeShot(float speed);
+	void Fire();
+
+protected:
+	ATank* tank;
+
 private:
 	static uint8 staticPlayerNum;
 	uint8 playerNum;

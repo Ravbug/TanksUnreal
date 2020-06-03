@@ -90,16 +90,6 @@ void ATank::Tick(float DeltaTime)
 	}
 }
 
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxis("Move",this,&ATank::Move);
-	PlayerInputComponent->BindAxis("Turn",this,&ATank::Turn);
-	PlayerInputComponent->BindAxis("ChargeShot", this, &ATank::ChargeShot);
-	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ATank::Fire);
-}
-
 /**
  * Move the tank. Called by the player input axis
  * @param amount the amount to move each scaled tick

@@ -42,6 +42,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int numRounds = 3;
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void PauseGame();
 
 protected:
 
@@ -64,6 +66,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
 		TSubclassOf<UUserWidget> GameCompleteWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
+		TSubclassOf<UUserWidget> PauseGameWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Colors")
 		TArray<FColor> tankColors;
