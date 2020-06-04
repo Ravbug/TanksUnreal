@@ -48,3 +48,4 @@ Goal is to reach parity with the Unity game, and perhaps extend on it.
 - [ ] Graphics Settings
 - [ ] Networking support
 - [ ] Mobile Touch
+- [x] points to wins
