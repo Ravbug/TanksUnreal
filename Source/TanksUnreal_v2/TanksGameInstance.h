@@ -18,4 +18,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<int> joinedPlayerStatus;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int pointsToWin;
 };

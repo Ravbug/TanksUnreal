@@ -125,6 +125,9 @@ void ATanksGameMode::StartPlay()
 	//get the game instance to know what players to spawn
 	auto gameinstance = Cast<UTanksGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
+	//get points needed to win game
+	pointsToWin = gameinstance->pointsToWin;
+
 	//get all the player starts
 	UGameplayStatics::GetAllActorsOfClass(Cast<UObject>(GetWorld()),APlayerStart::StaticClass(),playerStarts);
 
