@@ -31,6 +31,8 @@
 		"LinuxNoEditor",
 		"LinuxAArch64NoEditor",
 		"MacNoEditor",
-		"WindowsNoEditor"
+		"WindowsNoEditor",
+		"IOS",
+		"Android"
 	]
 }

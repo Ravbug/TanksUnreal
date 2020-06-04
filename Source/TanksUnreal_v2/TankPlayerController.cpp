@@ -28,6 +28,7 @@ void ATankPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("Turn", this, &ATankPlayerController::Turn);
 	InputComponent->BindAxis("ChargeShot", this, &ATankPlayerController::ChargeShot);
 	InputComponent->BindAction("Fire", IE_Released, this, &ATankPlayerController::Fire);
+	InputComponent->BindAction("TouchActivate", IE_Pressed, this, &ATankPlayerController::OnTouch);
 }
 
 //call the gamemode to pause the game
@@ -36,6 +37,17 @@ void ATankPlayerController::OnPause()
 	auto gamemode = Cast<ATanksGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (gamemode) {
 		gamemode->PauseGame();
+	}
+}
+
+// Draw the touch widget on screen
+void ATankPlayerController::OnTouch()
+{
+	if (!touchActivated) {
+		touchActivated = true;
+
+		//add the touch UI to the viewport
+		ShowTouchControls();
 	}
 }
 
@@ -49,6 +61,11 @@ void ATankPlayerController::OnUnPossess()
 {
 	Super::OnUnPossess();
 	tank = nullptr;
+}
+
+void ATankPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
 }
 
 void ATankPlayerController::Move(float amount)

@@ -30,19 +30,34 @@ public:
 	//called to bind functionality to input
 	virtual void SetupInputComponent() override;
 
-	void OnPause();
-
 	void OnPossess(APawn* other) override;
 	void OnUnPossess() override;
+
+	void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadWrite,EditAnywhere, Category = "UMG")
+		TSubclassOf<UUserWidget> TouchButtons;
+
+protected:
+	ATank* tank;
 
 	//control methods
 	void Move(float amount);
 	void Turn(float amount);
+
+	UFUNCTION(BlueprintCallable)
 	void ChargeShot(float speed);
+
+	UFUNCTION(BlueprintCallable)
 	void Fire();
 
-protected:
-	ATank* tank;
+	UFUNCTION(BlueprintImplementableEvent)
+		void ShowTouchControls();
+
+	void OnPause();
+
+	bool touchActivated = false;
+	void OnTouch();
 
 private:
 	static uint8 staticPlayerNum;
