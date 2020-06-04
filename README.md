@@ -15,7 +15,6 @@ Hardware
 1. A system that meets the [Unreal Editor requirements](https://docs.unrealengine.com/en-US/GettingStarted/RecommendedSpecifications/index.html)
 2. For Raytracing, a GPU that supports DirectX Ray Tracing.
 
-
 ## Compiling it yourself
 1. Ensure you have the software listed above installed on your computer.
 2. Download this repository as a zip or clone with --depth=1
@@ -27,6 +26,9 @@ Hardware
    - If this option is not visible, open the `.uproject` and go to `File->Generate Xcode/Visual Studio Project`
 5. Press the Compile and Run button in your IDE (CMD+R in Xcode, green Run button in VS)
 6. Play!
+
+## Just want to play the game?
+Head over to the [Releases](https://github.com/Ravbug/TanksUnreal/releases) section and download the latest. Linux users must create a build for their system, instructions are on the release page.
 
 ## Issues
 If you find an issue, use the [Issues](https://github.com/Ravbug/TanksUE4/issues) section of this repository to report it. Be sure to include specifically what the issue is, as well as what you've done to try to fix it. The more information you include, the better. However, I may not be able to fix it quickly.
