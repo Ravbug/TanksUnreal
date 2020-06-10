@@ -45,6 +45,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void PauseGame();
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void ToggleDiagnostic();
+
 protected:
 
 	TArray<ATank*> AllTanks;
@@ -69,6 +72,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
 		TSubclassOf<UUserWidget> PauseGameWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "UMG")
+		TSubclassOf<UUserWidget> DiagnosticWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Colors")
 		TArray<FColor> tankColors;

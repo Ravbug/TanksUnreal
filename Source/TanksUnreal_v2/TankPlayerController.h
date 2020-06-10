@@ -59,6 +59,8 @@ protected:
 	bool touchActivated = false;
 	void OnTouch();
 
+	void OnDiag();
+
 private:
 	static uint8 staticPlayerNum;
 	uint8 playerNum;

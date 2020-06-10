@@ -29,6 +29,7 @@ void ATankPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("ChargeShot", this, &ATankPlayerController::ChargeShot);
 	InputComponent->BindAction("Fire", IE_Released, this, &ATankPlayerController::Fire);
 	InputComponent->BindAction("TouchActivate", IE_Pressed, this, &ATankPlayerController::OnTouch);
+	InputComponent->BindAction("ToggleDiagnostic", IE_Pressed, this, &ATankPlayerController::OnDiag);
 }
 
 //call the gamemode to pause the game
@@ -48,6 +49,14 @@ void ATankPlayerController::OnTouch()
 
 		//add the touch UI to the viewport
 		ShowTouchControls();
+	}
+}
+
+void ATankPlayerController::OnDiag()
+{
+	auto gamemode = Cast<ATanksGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (gamemode) {
+		gamemode->ToggleDiagnostic();
 	}
 }
 
