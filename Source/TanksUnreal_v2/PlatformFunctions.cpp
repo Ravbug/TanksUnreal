@@ -1,6 +1,6 @@
-#include "TanksUnreal_v2.h" //add your project name
-#include "PlatformFunctions.h"
 
+#include "PlatformFunctions.h"
+#include "TanksUnreal_v2.h" //add your project name
 
 FString UPlatformFunctions::GetCPUBrandName()
 {
