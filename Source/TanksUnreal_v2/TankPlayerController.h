@@ -54,11 +54,14 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 		void ShowTouchControls();
 
+	UFUNCTION(BlueprintCallable)
 	void OnPause();
 
 	bool touchActivated = false;
+
 	void OnTouch();
 
+	UFUNCTION(BlueprintCallable)
 	void OnDiag();
 
 private:
