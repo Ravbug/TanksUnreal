@@ -30,6 +30,15 @@ Hardware
 ## Just want to play the game?
 Head over to the [Releases](https://github.com/Ravbug/TanksUnreal/releases) section and download the latest. Linux users must create a build for their system, instructions are on the release page.
 
+**Packaged game supported platforms** 
+- macOS
+- Windows (+ DXR if applicable)
+- Linux (Vulkan only)
+- iOS*
+- Android* 
+
+\* You must create a build for this platform using the editor
+
 ## Issues
 If you find an issue, use the [Issues](https://github.com/Ravbug/TanksUE4/issues) section of this repository to report it. Be sure to include specifically what the issue is, as well as what you've done to try to fix it. The more information you include, the better. However, I may not be able to fix it quickly.
 
@@ -44,6 +53,6 @@ If you find an issue, use the [Issues](https://github.com/Ravbug/TanksUE4/issues
 - [x] Fix naming system
 - [x] Tank Colors
 - [x] Graphics Settings
-- ~~[ ] Networking support~~
+~~- [ ] Networking support~~
 - [x] Mobile Touch
-- [x] points to wins
+- [x] points to win
