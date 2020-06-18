@@ -33,9 +33,7 @@ Head over to the [Releases](https://github.com/Ravbug/TanksUnreal/releases) sect
 ## Issues
 If you find an issue, use the [Issues](https://github.com/Ravbug/TanksUE4/issues) section of this repository to report it. Be sure to include specifically what the issue is, as well as what you've done to try to fix it. The more information you include, the better. However, I may not be able to fix it quickly.
 
-## To Do
-My list of tasks for this project, semi sorted by importance:
-Goal is to reach parity with the Unity game, and perhaps extend on it.
+## Tasks
 - [x] Correct shared camera 
 - [x] Input using playercontrollers
 - [x] Title screen
@@ -45,7 +43,7 @@ Goal is to reach parity with the Unity game, and perhaps extend on it.
 - [x] Barebones AI
 - [x] Fix naming system
 - [x] Tank Colors
-- [ ] Graphics Settings
-- [ ] Networking support
-- [ ] Mobile Touch
+- [x] Graphics Settings
+- ~~[ ] Networking support~~
+- [x] Mobile Touch
 - [x] points to wins
