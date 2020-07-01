@@ -53,6 +53,6 @@ If you find an issue, use the [Issues](https://github.com/Ravbug/TanksUE4/issues
 - [x] Fix naming system
 - [x] Tank Colors
 - [x] Graphics Settings
-~~- [ ] Networking support~~
+- [ ] ~~Networking support~~
 - [x] Mobile Touch
 - [x] points to win
