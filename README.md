@@ -8,8 +8,7 @@ I am writing the game predominantly in C++, using blueprint subclassing where it
 ## Requirements:
 Software
 1. Engine: [Unreal Engine 4.24.3](https://www.unrealengine.com/en-US/eulacheck?state=https%3A%2F%2Fwww.unrealengine.com%2Fen-US%2Ffeed&studio=false) or newer
-2. IDE: [Microsoft Visual Studio Community 2017](https://visualstudio.microsoft.com/) or [Xcode](https://developer.apple.com/xcode/) 
-   - The editor works on Linux, but Linux users must configure their environment to their specific system.
+2. The required C++ tools for your platform
 
 Hardware
 1. A system that meets the [Unreal Editor requirements](https://docs.unrealengine.com/en-US/GettingStarted/RecommendedSpecifications/index.html)
@@ -17,7 +16,7 @@ Hardware
 
 ## Compiling it yourself
 1. Ensure you have the software listed above installed on your computer.
-2. Download this repository as a zip or clone with --depth=1
+2. Download this repository as a zip or clone with `--depth=1`
 ### Editor only
 4. Open the `.uproject` and compile now if it asks
 5. Play! 
@@ -53,6 +52,5 @@ If you find an issue, use the [Issues](https://github.com/Ravbug/TanksUE4/issues
 - [x] Fix naming system
 - [x] Tank Colors
 - [x] Graphics Settings
-- [ ] ~~Networking support~~
 - [x] Mobile Touch
 - [x] points to win
