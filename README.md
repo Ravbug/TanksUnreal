@@ -7,13 +7,13 @@ I am writing the game predominantly in C++, using blueprint subclassing where it
 
 ## Requirements:
 Software
-1. Engine: [Unreal Engine 4.24.3](https://www.unrealengine.com/en-US/eulacheck?state=https%3A%2F%2Fwww.unrealengine.com%2Fen-US%2Ffeed&studio=false) or newer
-2. IDE: [Microsoft Visual Studio Community 2017](https://visualstudio.microsoft.com/) or [Xcode](https://developer.apple.com/xcode/) 
+1. Engine: [Unreal Engine 5.0.1](https://www.unrealengine.com/en-US/download) or newer
+2. IDE: [Microsoft Visual Studio Community](https://visualstudio.microsoft.com/) or [Xcode](https://developer.apple.com/xcode/) 
    - The editor works on Linux, but Linux users must configure their environment to their specific system.
 
 Hardware
-1. A system that meets the [Unreal Editor requirements](https://docs.unrealengine.com/en-US/GettingStarted/RecommendedSpecifications/index.html)
-2. For Raytracing, a GPU that supports DirectX Ray Tracing.
+1. A system that meets the [Unreal Editor requirements](https://docs.unrealengine.com/5.0/en-US/hardware-and-software-specifications-for-unreal-engine/)
+2. For Raytracing, a GPU that supports Hardware Ray Tracing.
 
 ## Compiling it yourself
 1. Ensure you have the software listed above installed on your computer.
@@ -28,7 +28,7 @@ Hardware
 6. Play!
 
 ## Just want to play the game?
-Head over to the [Releases](https://github.com/Ravbug/TanksUnreal/releases) section and download the latest. Linux users must create a build for their system, instructions are on the release page.
+Head over to the [Releases](https://github.com/Ravbug/TanksUnreal/releases) section and download the latest. 
 
 **Packaged game supported platforms** 
 - macOS
@@ -53,6 +53,5 @@ If you find an issue, use the [Issues](https://github.com/Ravbug/TanksUE4/issues
 - [x] Fix naming system
 - [x] Tank Colors
 - [x] Graphics Settings
-- [ ] ~~Networking support~~
 - [x] Mobile Touch
 - [x] points to win
