@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.24",
+	"EngineAssociation": "5.0",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -24,6 +24,15 @@
 				"Linux",
 				"Mac"
 			]
+		},
+		{
+			"Name": "Bridge",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"Linux"
+			]
 		}
 	],
 	"TargetPlatforms": [
@@ -32,7 +41,10 @@
 		"LinuxAArch64NoEditor",
 		"MacNoEditor",
 		"WindowsNoEditor",
+		"Windows",
 		"IOS",
-		"Android"
+		"Android",
+		"Linux",
+		"LinuxArm64"
 	]
 }
