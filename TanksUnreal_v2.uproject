@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.0",
+	"EngineAssociation": "{E076C14C-4878-0C58-8CA3-E79BEDFEB55A}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -15,16 +15,6 @@
 		}
 	],
 	"Plugins": [
-		{
-			"Name": "SteamVR",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Win32",
-				"Win64",
-				"Linux",
-				"Mac"
-			]
-		},
 		{
 			"Name": "Bridge",
 			"Enabled": true,

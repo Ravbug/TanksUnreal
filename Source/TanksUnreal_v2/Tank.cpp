@@ -22,6 +22,7 @@ ATank::ATank()
 	CollisionRoot->SetRelativeLocation(FVector(0,0, boxextent/2.0));
 	CollisionRoot->BodyInstance.bLockXRotation = true;
 	CollisionRoot->BodyInstance.bLockYRotation = true;
+	CollisionRoot->SetSimulatePhysics(true);
 
 	ChargeShotBar = CreateDefaultSubobject<UWidgetComponent>("ChargeShot");
 	ChargeShotBar->SetupAttachment(CollisionRoot);
@@ -69,14 +70,8 @@ void ATank::Tick(float DeltaTime)
 	deltaTime = DeltaTime;
 	Super::Tick(DeltaTime);
 
-	velocity -= velocity * 0.05 * deltaTime / evalNormal;
-	//move the tank forward based on velocity
-	FVector v = GetActorForwardVector().RotateAngleAxis(90, FVector::UpVector);
-	v *= velocity;
-	SetActorLocation(GetActorLocation() + v);
-
 	//play effects
-	if (abs(velocity) > 0.5) {
+	if (abs(GetVelocity().Length()) > 0.5) {
 		if (!isMoving) {
 			isMoving = true;
 			MovingAction();
@@ -97,9 +92,7 @@ void ATank::Tick(float DeltaTime)
 void ATank::Move(float amount)
 {
 	if (controlEnabled) {
-		if (abs(velocity) < maxSpeed * FPSSCALE) {
-			velocity += amount * FPSSCALE;
-		}
+		CollisionRoot->AddImpulse(GetActorRightVector() * amount * 5000);
 	}
 }
 
@@ -111,8 +104,9 @@ void ATank::Turn(float amount)
 {
 	if (controlEnabled) {
 		//scale for deltaTime
-		amount *= deltaTime / evalNormal;
-		SetActorRotation(GetActorRotation().Add(0, amount, 0));
+		CollisionRoot->AddAngularImpulseInRadians(GetActorUpVector() * amount * 5000);
+		//amount *= deltaTime / evalNormal;
+		//SetActorRotation(GetActorRotation().Add(0, amount, 0));
 	}
 }
 

@@ -36,7 +36,6 @@ public:
 	float currentPercent = 0;
 
 protected:
-	float velocity;
 	bool isMoving = false;
 
 	UPROPERTY(BlueprintReadWrite)
