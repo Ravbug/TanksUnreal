@@ -92,7 +92,7 @@ void ATank::Tick(float DeltaTime)
 void ATank::Move(float amount)
 {
 	if (controlEnabled) {
-		CollisionRoot->AddImpulse(GetActorRightVector() * amount * 5000);
+		CollisionRoot->AddImpulse(GetActorRightVector() * amount * 50);
 	}
 }
 
@@ -103,10 +103,7 @@ void ATank::Move(float amount)
 void ATank::Turn(float amount)
 {
 	if (controlEnabled) {
-		//scale for deltaTime
 		CollisionRoot->AddAngularImpulseInRadians(GetActorUpVector() * amount * 5000);
-		//amount *= deltaTime / evalNormal;
-		//SetActorRotation(GetActorRotation().Add(0, amount, 0));
 	}
 }
 
