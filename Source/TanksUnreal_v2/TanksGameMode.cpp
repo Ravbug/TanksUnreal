@@ -209,14 +209,6 @@ void ATanksGameMode::UpdateActiveTanks() {
 	}
 }
 
-/**
- * Get all the active tanks during this tick. A tank is active if it is alive.
- * @returns a TArray of the pointers to the active tanks
- */
-const TArray<ATank*>& ATanksGameMode::GetActiveTanks()
-{
-	return ActiveTanks;
-}
 
 /**
 Create a formatted score string to display in the viewport

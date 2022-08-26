@@ -35,7 +35,13 @@ public:
 
 	void Tick(float deltaTime) override;
 
-	const TArray<ATank*>& GetActiveTanks();
+	/**
+	 * Get all the active tanks during this tick. A tank is active if it is alive.
+	 * @returns a TArray of the pointers to the active tanks
+	 */
+	const auto& GetActiveTanks() {
+		return ActiveTanks;
+	}
 
 	FString GetScoreString();
 

@@ -140,7 +140,7 @@ void ATankAIController::Fire(const FVector& pos)
 	auto now = NOW;
 	if (now - LastShotTime > minShotDelay) {
 		//set fire strength
-		tank->currentPercent = FMath::GetMappedRangeValueClamped(distanceToPower,FVector2D(0.1,1),FVector::Distance(tank->GetActorLocation(),pos));
+		tank->currentPercent = FMath::GetMappedRangeValueClamped(distanceToPower,FVector2D(0.1,0.83),FVector::Distance(tank->GetActorLocation(),pos));
 
 		//fire and mark time
 		tank->Fire();
@@ -167,7 +167,7 @@ void ATankAIController::DefenseTick()
 		Fire(closest->GetActorLocation());
 	}
 
-	tank->Move(-0.1);
+	tank->Move(-0.5);
 }
 
 /**
@@ -209,7 +209,7 @@ void ATankAIController::DriveTick()
 		//drive towards path[1] with automatic speed
 		RotateToFacePos(path[1]);
 		auto dist = FVector::Distance(pos, path[1]);
-		tank->Move(FMath::GetMappedRangeValueClamped(FVector2D(0,2000),FVector2D(0,1),dist));
+		tank->Move(FMath::GetMappedRangeValueClamped(FVector2D(0,2000),FVector2D(0.8,1),dist));
 
 		//at end of path? switch states
 		if (path.Num() == 2 && dist < 200) {
