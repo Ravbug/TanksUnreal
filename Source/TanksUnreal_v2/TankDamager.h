@@ -20,7 +20,7 @@ public:
 		float damageMultiplier = 1.0;
 
 	UPROPERTY(BlueprintReadWrite)
-		float knockbackStrength = 500;
+		float knockbackStrength = 1000;
 
 protected:
 	// Called when the game starts or when spawned

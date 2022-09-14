@@ -92,7 +92,7 @@ void ATank::Tick(float DeltaTime)
 void ATank::Move(float amount)
 {
 	if (controlEnabled) {
-		CollisionRoot->AddImpulse(GetActorRightVector() * amount * 50);
+		CollisionRoot->AddImpulse(GetActorRightVector() * amount * 50 * pow(FPSSCALE, 1.3));
 	}
 }
 
@@ -103,7 +103,7 @@ void ATank::Move(float amount)
 void ATank::Turn(float amount)
 {
 	if (controlEnabled) {
-		CollisionRoot->AddAngularImpulseInRadians(GetActorUpVector() * amount * 5000);
+		CollisionRoot->AddAngularImpulseInRadians(GetActorUpVector() * amount * 1000 * pow(FPSSCALE,2));
 	}
 }
 
@@ -161,7 +161,7 @@ void ATank::Damage(ATankDamager* damagingActor)
 	dirvec.Z = 50;
 	dirvec = dirvec.RotateAngleAxis(180, FVector(0, 0, 1));
 	dirvec.Normalize();
-	CollisionRoot->AddImpulse(dirvec * damagingActor->knockbackStrength * CollisionRoot->GetMass());
+	CollisionRoot->AddImpulse(dirvec * damagingActor->knockbackStrength * CollisionRoot->GetMass() * FPSSCALE);
 
 	//dead? play explosion effect
 	if (currentHealth < 0) {
